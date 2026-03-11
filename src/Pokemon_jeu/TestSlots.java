@@ -96,9 +96,9 @@ public class TestSlots extends Canvas {
     }
 
     public void paint(Graphics g) {
-    	g.setColor(Color.red);
+    	g.setColor(Color.green);
         g.fillRect(barre.x+1, barre.y, barre.width,barre.height);
-        g.fillRect(barre2.x+1, barre2.y+1, barre2.width-110,barre2.height);
+        g.fillRect(barre2.x+1, barre2.y+1, barre2.width-66,barre2.height);
         // slots
         g.setColor(Color.BLACK);
         g.drawRect(slotA.x, slotA.y, slotA.width, slotA.height);
@@ -130,7 +130,9 @@ public class TestSlots extends Canvas {
 
         f.add(canvas);
         f.setSize(canvas.d.width, canvas.d.height);
+        f.setBackground(Color.LIGHT_GRAY);
         f.setVisible(true);
+        
 
         f.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

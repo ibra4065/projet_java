@@ -26,6 +26,10 @@ public class Controleur implements ActionListener ,MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void slotClique(Slot s) {
+	    // recupere le slot cliquer 
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

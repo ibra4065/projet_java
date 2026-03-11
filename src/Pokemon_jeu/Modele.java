@@ -131,9 +131,7 @@ public class Modele extends Observable{
 	    if (j.getAdverse().getPersonnageActif()== null) return;
 	    if (!j.getPersonnageActif().isUtilisable()) return;
 	    if (!j.getAdverse().getPersonnageActif().isUtilisable()) return;
-	    
-
-	    j.getPersonnageActif().attaquer(j.getAdverse().getPersonnageActif());
+	    courant.getPersonnageActif().attaquer(courant.getAdverse().getPersonnageActif());
 	    majPlateau();
 	    verifierFin(j);
 	    if (etat == Etat_partie.EN_COURS) prochainJoueur();
