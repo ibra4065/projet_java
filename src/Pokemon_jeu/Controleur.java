@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
+
 public class Controleur implements ActionListener ,MouseListener{
 	
 	private Modele model;
-	
+	private Slot slotslectioneé;
 	
 	
 	public Controleur(Modele model) {
@@ -27,9 +29,6 @@ public class Controleur implements ActionListener ,MouseListener{
 		
 	}
 	
-	public void slotClique(Slot s) {
-	    // recupere le slot cliquer 
-	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -52,6 +51,12 @@ public class Controleur implements ActionListener ,MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Slot slotcliquer = (Slot)e.getSource();
+		if (slotcliquer.getIcon()!=null) {
+			slotslectioneé=slotcliquer;
+			slotslectioneé.setSelect(true);
+		}
+		
 		
 	}
 
