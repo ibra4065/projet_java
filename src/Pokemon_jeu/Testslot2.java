@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 public class Testslot2 extends JPanel implements ActionListener, MouseListener {
 
@@ -45,6 +46,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
     JButton attaquerSud;
     JButton pouvoirSud;
     JButton changerSud;
+    
 
     public Testslot2(JFrame f) {
 
@@ -85,7 +87,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
             panelBoutons.add(b);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             JButton b = new JButton();
             b.setPreferredSize(new Dimension(100, 130));
             b.setMargin(new Insets(0, 0, 0, 0));
@@ -152,7 +154,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
 
         addMouseListener(this);
     }
-
+   
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

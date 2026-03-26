@@ -26,7 +26,12 @@ public class Vue extends JPanel implements Observer{
 	private Slot Slot_J2;
 	private ArrayList<Slot> CartesJ1;
 	private ArrayList<Slot> CartesJ2;
-
+	JPanel ActionJ1;
+	JPanel ActionJ2;
+	JPanel mainJ1;
+	JPanel mainJ2;
+	JPanel btnsJ1;
+	JPanel btnJ2;
 	
 	public Vue(Modele model, Controleur cntrl) {
 		super();
@@ -39,15 +44,17 @@ public class Vue extends JPanel implements Observer{
 		CartesJ1=new ArrayList<>();
 		CartesJ1=new ArrayList<>();
 		
-		JPanel mainJ1=new JPanel();
-		JPanel mainJ2=new JPanel();
-		JPanel btnsJ1=new JPanel();
-		JPanel btnJ2 = new JPanel();
+		mainJ1=new JPanel();
+		mainJ2=new JPanel();
+		btnsJ1=new JPanel(); // Slot J1 pour poser sa carte 
+		btnJ2 = new JPanel();// Slot J2 pour poser sa carte 
+		ActionJ1=new JPanel();
+		ActionJ2 = new JPanel();
 		
-		mainJ1.setLayout(new FlowLayout(FlowLayout.CENTER, 25, model.getJ1().getMain().size()));
-        mainJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 17));
-		mainJ2.setLayout(new FlowLayout(FlowLayout.CENTER, 25, model.getJ2().getMain().size()));
-        mainJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 17));
+		mainJ1.setLayout(new FlowLayout(FlowLayout.CENTER, 15, model.getJ1().getMain().size()));
+        mainJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
+		mainJ2.setLayout(new FlowLayout(FlowLayout.CENTER, 15, model.getJ2().getMain().size()));
+        mainJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
         
         plt=Toolkit.getDefaultToolkit().getImage("cartes/logo.png");
         

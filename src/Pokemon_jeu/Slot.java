@@ -75,4 +75,6 @@ public class Slot extends JButton {
 
     public boolean isSelect() { return select; }
     public void setSelect(boolean select) { this.select = select; }
+    
+    
 }
