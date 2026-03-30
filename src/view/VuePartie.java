@@ -1,4 +1,4 @@
-package Pokemon_jeu;
+package view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,11 +13,19 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 
-/* class qui la vue des main de chaque joueur */
-public class Vue extends JPanel implements Observer{
+import controleur.Controleur;
+import model.Modele;
+import model.Slot;
+
+/* 
+ * au debut de la partie chaque affichage 2 buttons piocher init pour chaque joueur 
+ * gerer jusqqu'a la fin de la partie 
+ * afficher le gagnant et button de rejouer
+ * */
+public class VuePartie extends JPanel implements Observer{
 	
 
-	Dimension dim = new Dimension(600,800);
+	Dimension dim = new Dimension(700,800);
 	Modele model;
 	Controleur cntrl;
 	
@@ -33,7 +41,7 @@ public class Vue extends JPanel implements Observer{
 	JPanel btnsJ1;
 	JPanel btnJ2;
 	
-	public Vue(Modele model, Controleur cntrl) {
+	public VuePartie(Modele model, Controleur cntrl) {
 		super();
 		setPreferredSize(dim);
         setLayout(null);

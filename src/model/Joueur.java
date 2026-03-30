@@ -1,4 +1,4 @@
-package Pokemon_jeu;
+package model;
 
 import java.util.ArrayList;
 import java.util.Stack;

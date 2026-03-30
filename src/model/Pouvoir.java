@@ -1,4 +1,4 @@
-package Pokemon_jeu;
+package model;
 
 
 public class Pouvoir {

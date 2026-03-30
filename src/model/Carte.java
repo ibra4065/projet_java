@@ -1,6 +1,6 @@
-package Pokemon_jeu;
+package model;
 
-import Pokemon_jeu.Pouvoir.TypePouvoir;
+import model.Pouvoir.TypePouvoir;
 
 public class Carte {
 	

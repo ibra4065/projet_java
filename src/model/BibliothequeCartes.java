@@ -1,10 +1,15 @@
-package Pokemon_jeu;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
-import Pokemon_jeu.Pouvoir.TypePouvoir;
+import model.Pouvoir.TypePouvoir;
+
+/* ne pas changer la facon de gener les cartes 
+ * cree un dictionnaire qui est presenter par le nom du perso comme clé 
+ * et pour valeur un dictionnaire de caracteristique 
+ * */
 
 public class BibliothequeCartes {
 	

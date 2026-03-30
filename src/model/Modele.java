@@ -1,8 +1,8 @@
-package Pokemon_jeu;
+package model;
 
 import java.util.Observable;
 
-import Pokemon_jeu.Joueur.EtatJoueur;
+import model.Joueur.EtatJoueur;
 
 public class Modele extends Observable{
 	

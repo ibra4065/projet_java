@@ -1,4 +1,4 @@
-package Pokemon_jeu;
+package model;
 
 import java.awt.Button;
 import java.awt.Dimension;

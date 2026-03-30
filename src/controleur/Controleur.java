@@ -1,4 +1,4 @@
-package Pokemon_jeu;
+package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+
+import model.Modele;
+import model.Slot;
 
 public class Controleur implements ActionListener ,MouseListener{
 	
