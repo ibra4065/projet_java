@@ -19,9 +19,9 @@ public class BibliothequeCartes {
 		
 		public Caracteristique(int pv, int attack,int defence) {
 			super();
-			this.put("pv", pv);
-			this.put("attack", attack);
-			this.put("defence", defence);
+			this.put("PV", pv);
+			this.put("Attack", attack);
+			this.put("Def", defence);
 		}
 		
 	}
@@ -36,11 +36,11 @@ public class BibliothequeCartes {
 	public BibliothequeCartes() {
 		
 	    CatalogueCartes = new HashMap<String, BibliothequeCartes.Caracteristique>();
-	    CatalogueCartes.put("Dragon", new Caracteristique(75, 30, 20));
-	    CatalogueCartes.put("Pretre",new Caracteristique(60 , 15, 15));
-	    CatalogueCartes.put("Assassin",new Caracteristique(50, 25, 10));
-	    CatalogueCartes.put("Guerrier",new Caracteristique(70, 20, 20));
-	    CatalogueCartes.put("Archer",new Caracteristique(55, 18, 12));
+	    CatalogueCartes.put("Dracaufeu", new Caracteristique(170, 55 , 60));
+	    CatalogueCartes.put("Pikachu",new Caracteristique(70 , 15, 10));
+	    CatalogueCartes.put("Feuillajou",new Caracteristique(70, 15, 10));
+	    CatalogueCartes.put("Magicarpe",new Caracteristique(30, 5, 5));
+	    CatalogueCartes.put("Qulbutoké",new Caracteristique(120, 30, 25));
 	}
 	
 	
