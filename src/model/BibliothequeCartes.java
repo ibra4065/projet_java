@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import model.Pouvoir.TypePouvoir;
@@ -13,50 +15,43 @@ import model.Pouvoir.TypePouvoir;
 
 public class BibliothequeCartes {
 	
+	public class Caracteristique extends HashMap<String, Integer>{
+		
+		public Caracteristique(int pv, int attack,int defence) {
+			super();
+			this.put("pv", pv);
+			this.put("attack", attack);
+			this.put("defence", defence);
+		}
+		
+	}
+	
 	public final static int tailledeck = 5;
-	private ArrayList<String> CatalogueCartes;
+	//private ArrayList<String> CatalogueCartes;
+	private Map<String, Caracteristique> CatalogueCartes;
+	private ArrayList<Carte> cartes;
+	Pouvoir[] pouv;
+	
 	
 	public BibliothequeCartes() {
-	    CatalogueCartes = new ArrayList<>();
-
-	    CatalogueCartes.add("Dragon");
-	    CatalogueCartes.add("Pretre");
-	    CatalogueCartes.add("Assassin");
-	    CatalogueCartes.add("Guerrier");
-	    CatalogueCartes.add("Archer");
+		
+	    CatalogueCartes = new HashMap<String, BibliothequeCartes.Caracteristique>();
+	    CatalogueCartes.put("Dragon", new Caracteristique(75, 30, 20));
+	    CatalogueCartes.put("Pretre",new Caracteristique(60 , 15, 15));
+	    CatalogueCartes.put("Assassin",new Caracteristique(50, 25, 10));
+	    CatalogueCartes.put("Guerrier",new Caracteristique(70, 20, 20));
+	    CatalogueCartes.put("Archer",new Caracteristique(55, 18, 12));
 	}
 	
 	
-	public Carte creerCarte(String nom) {
+	public Carte creerCarte(String nom , Pouvoir p) {
+		Carte c = new Carte(nom, CatalogueCartes.get(nom).get("pv"), CatalogueCartes.get(nom).get("attack"), CatalogueCartes.get(nom).get("defence"), p);
 
-	    if (nom.toLowerCase().equals("dragon")) {
-	        return new Carte("Dragon", 75, 30, 20,
-	                new Pouvoir(TypePouvoir.BRULURE, 5, 2));
-	    } 
-
-	    if (nom.toLowerCase().equals("pretre")) {
-	        return new Carte("Pretre", 60, 15, 15,
-	                new Pouvoir(TypePouvoir.SOIN, 15, 0));
-	    }
-
-	    if (nom.toLowerCase().equals("assassin")) {
-	        return new Carte("Assassin", 50, 25, 10,
-	                new Pouvoir(TypePouvoir.CRITIQUE, 2, 0));
-	    }
-
-	    if (nom.toLowerCase().equals("guerrier")) {
-	        return new Carte("Guerrier", 70, 20, 20,
-	                new Pouvoir(TypePouvoir.BUFF_ATTAQUE, 10, 2));
-	    }
-
-	    if (nom.toLowerCase().equals("archer")) {
-	        return new Carte("Archer", 55, 18, 12);
-	    }
-
-	    return null; // 
+		
+	    return c;
 	}
 	
-	public Stack<Carte> creerDeckAleatoire(int tailleDeck) {
+	/*public Stack<Carte> creerDeckAleatoire(int tailleDeck) {
 
 	    Stack<Carte> deck = new Stack<>();
 
@@ -68,5 +63,5 @@ public class BibliothequeCartes {
 	    }
 
 	    return deck;
-	}
+	}*/
 }
