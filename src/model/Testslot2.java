@@ -69,7 +69,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
 
     public Testslot2(JFrame f) {
 
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(1000, 800));
         setLayout(new BorderLayout());
 
         buttons = new ArrayList<JButton>();

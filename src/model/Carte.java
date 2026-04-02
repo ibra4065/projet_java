@@ -3,160 +3,166 @@ package model;
 import model.Pouvoir.TypePouvoir;
 
 public class Carte {
-	
-	public enum typeCarte {
-	    ACIER,
-	    COMBAT,
-	    DRAGON,
-	    EAU,
-	    ELECTRIK,
-	    FEE,
-	    FEU,
-	    GLACE,
-	    INSECTE,
-	    NORMAL,
-	    PLANTE,
-	    POISON,
-	    PSY,
-	    ROCHE,
-	    SOL,
-	    SPECTRE,
-	    TENEBRES,
-	    VOL
-	}
-	
-	private final String nom;
-	private int pv;
-	private typeCarte type;
-	private  int attack;
-	private final int defance;
-	private final int pvmax;
-	private Pouvoir pouvoir;
-	private boolean utilisable;
-	
-	public Carte(String nom, int pv, int atack, int defance, Pouvoir pouvoir,typeCarte type) {
-		this.nom = nom;
-		this.pv = pv;
-		this.pvmax=pv;
-		this.attack = atack;
-		this.defance = defance;
-		this.pouvoir = pouvoir;
-		this.utilisable=true;
-		this.type=type;
-	}
+    
+    public enum typeCarte {
+        ACIER, COMBAT, DRAGON, EAU, ELECTRIK, FEE, FEU, GLACE,
+        INSECTE, NORMAL, PLANTE, POISON, PSY, ROCHE, SOL,
+        SPECTRE, TENEBRES, VOL
+    }
+
+    // 🔥 MATRICE DES TYPES
+    private static final double[][] TYPE_CHART = {
+
+    //DEF →
+    // ACIER COMBAT DRAGON EAU ELEC FEE FEU GLACE INSECT NORMAL PLANTE POISON PSY ROCHE SOL SPECT TENEB VOL
 
 
+    /*ACIER*/   {0.5,2.0,0.5,1.0,1.0,0.5,2.0,0.5,0.5,0.5,0.5,0.0,0.5,0.5,2.0,1.0,1.0,0.5},
+    /*COMBAT*/  {1.0,1.0,1.0,1.0,1.0,2.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.0},
+    /*DRAGON*/  {1.0,1.0,2.0,1.0,1.0,2.0,1.0,2.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0},
+    /*EAU*/     {1.0,1.0,1.0,1.0,2.0,1.0,1.0,1.0,1.0,1.0,2.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0},
+    /*ELECTRIK*/{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.0,1.0,1.0,1.0},
+    /*FEE*/     {2,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    /*FEU*/     {1,1,1,2,1,1,1,1,1,1,1,1,1,2,2,1,1,1},
+    /*GLACE*/   {2,2,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1},
+    /*INSECTE*/ {1,1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,2},
+    /*NORMAL*/  {1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1},
+    /*PLANTE*/  {1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,2},
+    /*POISON*/  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    /*PSY*/     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    /*ROCHE*/   {2,2,1,2,1,1,1,1,1,1,2,1,1,1,2,1,1,1},
+    /*SOL*/     {1,1,1,2,0,1,2,1,1,1,2,1,1,1,1,1,1,1},
+    /*SPECTRE*/ {1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,2,1},
+    /*TENEBRES*/{1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    /*VOL*/     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1}
+    };
 
-	public Carte(String nom, int pv, int atack, int defance) {
-		super();
-		this.nom = nom;
-		this.pv = pv;
-		this.pvmax=pv;
-		this.attack = atack;
-		this.pouvoir = null;
-		this.defance=defance;
-		this.utilisable=true;
-	}
-	
+    private final String nom;
+    private int pv;
+    private typeCarte type;
+    private int attack;
+    private final int defance;
+    private final int pvmax;
+    private Pouvoir pouvoir;
+    private boolean utilisable;
 
+    public Carte(String nom, int pv, int atack, int defance, Pouvoir pouvoir, typeCarte type) {
+        this.nom = nom;
+        this.pv = pv;
+        this.pvmax = pv;
+        this.attack = atack;
+        this.defance = defance;
+        this.pouvoir = pouvoir;
+        this.utilisable = true;
+        this.type = type;
+    }
 
-	public void attaquer(Carte cible) {
-	    int degat = this.attack - cible.defance;
-	    if (degat < 0) degat = 0;
+    public Carte(String nom, int pv, int atack, int defance, typeCarte type) {
+        this.nom = nom;
+        this.pv = pv;
+        this.pvmax = pv;
+        this.attack = atack;
+        this.defance = defance;
+        this.pouvoir = null;
+        this.utilisable = true;
+        this.type = type;
+    }
 
-	    cible.pv -= degat;
-	    cible.verifierKO();   
-	}
+    /*a changer apres avoir fini le type et potentielment pouvoir*/
+    public void attaquer(Carte cible) {
 
-	    public void utiliserPouvoir(Carte cible) {
-	        if (this.pouvoir == null) return;
+        int base = this.attack - cible.defance;
+        if (base < 0) base = 0;
 
-	        TypePouvoir t = this.pouvoir.getType();
+        double multi = TYPE_CHART[this.type.ordinal()][cible.type.ordinal()];
 
-	        if (t == TypePouvoir.SOIN) {
-	            this.pv += this.pouvoir.getValeur();
-	            if (this.pv > this.pvmax) this.pv = this.pvmax;   
-	            this.pouvoir.setEtat(false);                      
-	        }
-	        
-	        else if (t == TypePouvoir.BRULURE) {
-	            brulure(cible);
-	        }
-	        else if (t == TypePouvoir.CRITIQUE) {
-	            critique(cible);
-	        }
-	        else if (t == TypePouvoir.BUFF_ATTAQUE) {
-	            buffAtt(cible);
-	        }
-	    }
-	    
-	    private void brulure(Carte cible) {
-	        cible.pv -= this.pouvoir.getValeur();
-	        if (cible.pv < 0) cible.pv = 0;
+        //int degat = (int)(base * multi); // conversion en int à la fin
+        int degat = (int)Math.round(base * multi);
 
-	        // ✅ décrémente puis désactive si durée terminée
-	        int d = this.pouvoir.getDuree();
-	        if (d > 0) {
-	            this.pouvoir.setDuree(d - 1);
-	        }
-	        if (this.pouvoir.getDuree() == 0) {
-	            this.pouvoir.setEtat(false);
-	        }
+        if (multi > 1) {
+            System.out.println("Super efficace !");
+        } else if (multi > 0 && multi < 1) {
+            System.out.println("Pas très efficace...");
+        } else if (multi == 0) {
+            System.out.println("Aucun effet...");
+        }
 
-	        cible.verifierKO();
-	    }
+        cible.pv -= degat;
+        cible.verifierKO();
+    }
 
-	    private void critique(Carte cible) {
-	        int degat = this.attack - cible.defance;
-	        if (degat < 0) degat = 0;
+    public void utiliserPouvoir(Carte cible) {
+        if (this.pouvoir == null || !this.pouvoir.isEtat()) return;
 
-	        int multiplicateur = this.pouvoir.getValeur(); // ex: 2
-	        cible.pv -= degat * multiplicateur;
-	        if (cible.pv < 0) cible.pv = 0;
+        TypePouvoir t = this.pouvoir.getType();
 
-	        this.pouvoir.setEtat(false);
-	        cible.verifierKO();   
-	    }
+        if (t == TypePouvoir.SOIN) {
+            this.pv += this.pouvoir.getValeur();
+            if (this.pv > this.pvmax) this.pv = this.pvmax;
+            this.pouvoir.setEtat(false);
+        }
+        else if (t == TypePouvoir.BRULURE) {
+            brulure(cible);
+        }
+        else if (t == TypePouvoir.CRITIQUE) {
+            critique(cible);
+        }
+        else if (t == TypePouvoir.BUFF_ATTAQUE) {
+            buffAtt(cible);
+        }
+    }
 
-	    private void buffAtt(Carte cible) {
-	        int attackTemp = this.attack + this.pouvoir.getValeur();
-	        int degat = attackTemp - cible.defance;
-	        if (degat < 0) degat = 0;
+    private void brulure(Carte cible) {
+        cible.pv -= this.pouvoir.getValeur();
+        if (cible.pv < 0) cible.pv = 0;
 
-	        cible.pv -= degat;
-	        if (cible.pv < 0) cible.pv = 0;
+        int d = this.pouvoir.getDuree();
+        if (d > 0) this.pouvoir.setDuree(d - 1);
+        if (this.pouvoir.getDuree() == 0) this.pouvoir.setEtat(false);
 
-	        // ✅ décrémente puis désactive si durée terminée
-	        int d = this.pouvoir.getDuree();
-	        if (d > 0) {
-	            this.pouvoir.setDuree(d - 1);
-	        }
-	        if (this.pouvoir.getDuree() == 0) {
-	            this.pouvoir.setEtat(false);
-	        }
+        cible.verifierKO();
+    }
 
-	        cible.verifierKO();
-	    }
-	    
-	    private void verifierKO() {
-	        if (this.pv <= 0) {
-	            this.pv = 0;
-	            this.utilisable = false;
-	        }
-	    }
+    private void critique(Carte cible) {
+        int degat = this.attack - cible.defance;
+        if (degat < 0) degat = 0;
 
+        cible.pv -= degat * this.pouvoir.getValeur();
+        if (cible.pv < 0) cible.pv = 0;
 
-		public String getNom() {return nom;}
-		public int getPv() {return pv;}
-		public void setPv(int pv) {this.pv = pv;}
-		public void setUtilisable(boolean utilisable) {this.utilisable = utilisable;}
-		public boolean isUtilisable() {return utilisable;}
-		public int getAttack() {return attack;}
-		public int getDefance() {return defance;}
-		public Pouvoir getPouvoir() {return pouvoir;}
-		public int getPvmax() {return pvmax;}
+        this.pouvoir.setEtat(false);
+        cible.verifierKO();
+    }
 
-		
-	
-	
+    private void buffAtt(Carte cible) {
+        int attackTemp = this.attack + this.pouvoir.getValeur();
+        int degat = attackTemp - cible.defance;
+        if (degat < 0) degat = 0;
+
+        cible.pv -= degat;
+        if (cible.pv < 0) cible.pv = 0;
+
+        int d = this.pouvoir.getDuree();
+        if (d > 0) this.pouvoir.setDuree(d - 1);
+        if (this.pouvoir.getDuree() == 0) this.pouvoir.setEtat(false);
+
+        cible.verifierKO();
+    }
+
+    private void verifierKO() {
+        if (this.pv <= 0) {
+            this.pv = 0;
+            this.utilisable = false;
+        }
+    }
+
+    
+    public String getNom() { return nom; }
+    public int getPv() { return pv; }
+    public void setPv(int pv) { this.pv = pv; }
+    public boolean isUtilisable() { return utilisable; }
+    public int getAttack() { return attack; }
+    public int getDefance() { return defance; }
+    public Pouvoir getPouvoir() { return pouvoir; }
+    public int getPvmax() { return pvmax; }
 }

@@ -48,12 +48,12 @@ public class BibliothequeCartes {
 	}
 	
 	
-	public Carte creerCarte(String nom , Pouvoir p) {
+	/*public Carte creerCarte(String nom , Pouvoir p) {
 		Carte c = new Carte(nom, CatalogueCartes.get(nom).get("pv"), CatalogueCartes.get(nom).get("attack"), CatalogueCartes.get(nom).get("defence"), p);
 
 		
 	    return c;
-	}
+	}*/
 	
 	/*public Stack<Carte> creerDeckAleatoire(int tailleDeck) {
 
