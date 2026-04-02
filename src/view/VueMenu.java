@@ -8,13 +8,15 @@ public class VueMenu extends JPanel {
     private JButton btnJouer;
     private JButton btnOption;
     private JButton btnQuitter;
+    private Image imageFond;
     
 
     public VueMenu() {
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.WHITE);
-
         
+        imageFond = new ImageIcon("images/fond.gif").getImage();
+
+
         String path = "images/PokemonLogo.png";
         ImageIcon iconOriginal = new ImageIcon(path);
         
@@ -34,12 +36,13 @@ public class VueMenu extends JPanel {
         
         JPanel panelBoutons = new JPanel();
         panelBoutons.setLayout(new BoxLayout(panelBoutons, BoxLayout.Y_AXIS));
-        panelBoutons.setBackground(Color.WHITE);
+        panelBoutons.setOpaque(false);
 
         btnJouer = creerBoutonMenu("Jouer");
         btnOption = creerBoutonMenu("Option");
         btnQuitter = creerBoutonMenu("Quitter");
-
+        
+        btnQuitter.addActionListener(e -> System.exit(0));
       
 
         btnJouer.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,6 +56,14 @@ public class VueMenu extends JPanel {
         panelBoutons.add(btnQuitter);
 
         this.add(panelBoutons, BorderLayout.CENTER);
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (imageFond != null) {
+            g.drawImage(imageFond, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 
     private JButton creerBoutonMenu(String texte) {
