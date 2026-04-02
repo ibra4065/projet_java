@@ -88,7 +88,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
     }
 
     public void creerImages() {
-        image = new ImageIcon("cartes/dragon.png");
+        image = new ImageIcon("cartes/Dracaufeu.png");
         Image img = image.getImage();
         Image imgRedim = img.getScaledInstance(105, 135, Image.SCALE_SMOOTH);
         image = new ImageIcon(imgRedim);
@@ -97,6 +97,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         Image imgBas = img2.getImage();
         Image imgRedim2 = imgBas.getScaledInstance(170, 130, Image.SCALE_SMOOTH);
         img2 = new ImageIcon(imgRedim2);
+       
     }
 
     public void creerZoneNord() {

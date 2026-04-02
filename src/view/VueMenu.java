@@ -40,8 +40,7 @@ public class VueMenu extends JPanel {
         btnOption = creerBoutonMenu("Option");
         btnQuitter = creerBoutonMenu("Quitter");
 
-        btnQuitter.setBorderPainted(true);
-        btnQuitter.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
+      
 
         btnJouer.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnOption.setAlignmentX(Component.CENTER_ALIGNMENT);
