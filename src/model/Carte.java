@@ -4,15 +4,37 @@ import model.Pouvoir.TypePouvoir;
 
 public class Carte {
 	
+	public enum typeCarte {
+	    ACIER,
+	    COMBAT,
+	    DRAGON,
+	    EAU,
+	    ELECTRIK,
+	    FEE,
+	    FEU,
+	    GLACE,
+	    INSECTE,
+	    NORMAL,
+	    PLANTE,
+	    POISON,
+	    PSY,
+	    ROCHE,
+	    SOL,
+	    SPECTRE,
+	    TENEBRES,
+	    VOL
+	}
+	
 	private final String nom;
 	private int pv;
-	private final int attack;
+	private typeCarte type;
+	private  int attack;
 	private final int defance;
 	private final int pvmax;
 	private Pouvoir pouvoir;
 	private boolean utilisable;
 	
-	public Carte(String nom, int pv, int atack, int defance, Pouvoir pouvoir) {
+	public Carte(String nom, int pv, int atack, int defance, Pouvoir pouvoir,typeCarte type) {
 		this.nom = nom;
 		this.pv = pv;
 		this.pvmax=pv;
@@ -20,6 +42,7 @@ public class Carte {
 		this.defance = defance;
 		this.pouvoir = pouvoir;
 		this.utilisable=true;
+		this.type=type;
 	}
 
 
