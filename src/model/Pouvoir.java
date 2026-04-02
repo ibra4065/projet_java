@@ -7,7 +7,9 @@ public class Pouvoir {
 	    SOIN,
 	    BRULURE,
 	    BUFF_ATTAQUE,
-	    CRITIQUE
+	    CRITIQUE,
+	    DEBUFF_ATTAQUE
+	    
 	}
 	
 	private TypePouvoir type;

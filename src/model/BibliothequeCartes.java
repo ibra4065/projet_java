@@ -36,11 +36,15 @@ public class BibliothequeCartes {
 	public BibliothequeCartes() {
 		
 	    CatalogueCartes = new HashMap<String, BibliothequeCartes.Caracteristique>();
-	    CatalogueCartes.put("Dracaufeu", new Caracteristique(170, 55 , 60));
+	    CatalogueCartes.put("Dracaufeu", new Caracteristique(170, 55 , 80));
 	    CatalogueCartes.put("Pikachu",new Caracteristique(70 , 15, 10));
 	    CatalogueCartes.put("Feuillajou",new Caracteristique(70, 15, 10));
 	    CatalogueCartes.put("Magicarpe",new Caracteristique(30, 5, 5));
-	    CatalogueCartes.put("Qulbutoké",new Caracteristique(120, 30, 25));
+	    CatalogueCartes.put("Qulbutoké",new Caracteristique(120, 30, 50));
+	    CatalogueCartes.put("Salamèche", new Caracteristique(70, 15, 10));
+	    CatalogueCartes.put("Goupix", new Caracteristique(60, 10, 10));
+	    CatalogueCartes.put("Diancie", new Caracteristique(90, 20, 35));
+	    CatalogueCartes.put("Miaouss", new Caracteristique(60, 10, 10));
 	}
 	
 	
