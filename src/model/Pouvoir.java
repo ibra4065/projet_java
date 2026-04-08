@@ -1,100 +1,115 @@
 package model;
 
-
 public class Pouvoir {
-	
-	public enum TypePouvoir {
-	    SOIN,
-	    BRULURE,
-	    BUFF_ATTAQUE,
-	    CRITIQUE,
-	    DEBUFF_ATTAQUE
-	    
-	}
-	
-	private TypePouvoir type;
-	private int valeur;
-	private int duree;
-	boolean etat;
-	
-	/**
-	 * @return the valeur
-	 */
-	public int getValeur() {
-		return valeur;
-	}
+    
+    public static enum TypePouvoir {
+        SOIN,
+        BRULURE,
+        BUFF_ATTAQUE,
+        CRITIQUE,
+        DEBUFF_ATTAQUE,
+        PARALYSIE,
+        POISON,
+        SOMMEIL,
+        GEL,
+        BUFF_DEFENSE,
+        DEBUFF_DEFENSE
+    }
+    
+    private TypePouvoir type;
+    private int valeur;
+    private int duree;
+    boolean etat;
 
+    public Pouvoir(TypePouvoir type) {
+        this.type = type;
+        this.etat = true;
 
-	/**
-	 * @param valeur the valeur to set
-	 */
-	public void setValeur(int valeur) {
-		this.valeur = valeur;
-	}
+        // 🔥 INITIALISATION AUTOMATIQUE
+        switch(type) {
 
+            case SOIN:
+                valeur = 20;
+                duree = 1;
+                break;
 
-	/**
-	 * @return the durée
-	 */
-	public int getDuree() {
-		return duree;
-	}
+            case CRITIQUE:
+                valeur = 2; // x2 dégâts
+                duree = 1;
+                break;
 
+            case BRULURE:
+                valeur = 5;
+                duree = 3;
+                break;
 
-	/**
-	 * @param durée the durée to set
-	 */
-	public void setDuree(int durée) {
-		this.duree = durée;
-	}
+            case POISON:
+                valeur = 5;
+                duree = 3;
+                break;
 
+            case BUFF_ATTAQUE:
+                valeur = 10;
+                duree = 3;
+                break;
 
-	
-	
-	
-	public Pouvoir(TypePouvoir type, int valeur, int durée) {
-		this.type = type;
-		this.valeur = valeur;
-		this.duree = durée;
-		this.etat=true;
-		
-	}
+            case DEBUFF_ATTAQUE:
+                valeur = 10;
+                duree = 3;
+                break;
 
+            case BUFF_DEFENSE:
+                valeur = 10;
+                duree = 3;
+                break;
 
-	/**
-	 * @return the etat
-	 */
-	public boolean isEtat() {
-		return etat;
-	}
+            case DEBUFF_DEFENSE:
+                valeur = 10;
+                duree = 3;
+                break;
 
+            case PARALYSIE:
+                valeur = 1;
+                duree = 2;
+                break;
 
-	/**
-	 * @param etat the etat to set
-	 */
-	public void setEtat(boolean etat) {
-		this.etat = etat;
-	}
+            case SOMMEIL:
+                valeur = 1;
+                duree = 2;
+                break;
 
+            case GEL:
+                valeur = 1;
+                duree = 2;
+                break;
+        }
+    }
 
-	/**
-	 * @return the type
-	 */
-	public TypePouvoir getType() {
-		return type;
-	}
+    public int getValeur() {
+        return valeur;
+    }
 
+    public int getDuree() {
+        return duree;
+    }
 
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(TypePouvoir type) {
-		this.type = type;
-	}
-	
-	
-	
-	
-	
-	
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
+        this.etat = etat;
+    }
+
+    public TypePouvoir getType() {
+        return type;
+    }
+
+    public void setType(TypePouvoir type) {
+        this.type = type;
+    }
 }

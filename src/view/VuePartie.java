@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 
 import controleur.Controleur;
 import model.Modele;
-import model.Slot;
 
 /* 
  * au debut de la partie chaque affichage 2 buttons piocher init pour chaque joueur 

@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 
 import model.Modele;
-import model.Slot;
+import view.Slot;
 
 public class Controleur implements ActionListener ,MouseListener{
 	

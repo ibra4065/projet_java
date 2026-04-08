@@ -33,8 +33,8 @@ public class Modele extends Observable{
 	
 	public Modele() {
 		this.biblio=new BibliothequeCartes();
-		/*J1 = new Joueur("J1", biblio.creerDeckAleatoire(BibliothequeCartes.tailledeck),0);
-		J2 = new Joueur("J2", biblio.creerDeckAleatoire(BibliothequeCartes.tailledeck),1);*/
+		J1 = new Joueur("J1", biblio.creerDeckAleatoire(5),0);
+		J2 = new Joueur("J2", biblio.creerDeckAleatoire(5),1);
 		plateau = new Carte[taillPlateau];
 		tour=0;
 		this.etat=Etat_partie.DEBUT;
@@ -117,7 +117,7 @@ public class Modele extends Observable{
 	    if (etat != Etat_partie.EN_COURS) return;
 	    if (j != courant) return;
 
-	    j.changerPersonnage(c);
+	    j.ChangerCarte(c);
 	    majPlateau();
 
 	    setChanged();
@@ -171,7 +171,9 @@ public class Modele extends Observable{
 	    notifyObservers();
 	}
 	
-
+	public void reset() {
+		
+	}
 	
 	public int getTour() {return tour;}
 	public Joueur getJ1() {return J1;}

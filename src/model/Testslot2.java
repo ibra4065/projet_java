@@ -90,7 +90,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
     public void creerImages() {
         image = new ImageIcon("cartes/Dracaufeu.png");
         Image img = image.getImage();
-        Image imgRedim = img.getScaledInstance(105, 135, Image.SCALE_SMOOTH);
+        Image imgRedim = img.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
         image = new ImageIcon(imgRedim);
 
         img2 = new ImageIcon("cartes/pikachu.png");

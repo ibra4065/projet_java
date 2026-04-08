@@ -52,7 +52,7 @@ public class Joueur {
 	    }
 	}
 	
-	public void changerPersonnage(Carte c) {
+	public void ChangerCarte(Carte c) {
 	    if (main.contains(c)) {
 	        
 	        if (personnageActif != null && personnageActif.isUtilisable()) main.add(personnageActif);

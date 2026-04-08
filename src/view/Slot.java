@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.awt.Button;
 import java.awt.Dimension;
@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import model.Carte;
 
 public class Slot extends JButton {
 
