@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -76,9 +77,11 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         buttons2 = new ArrayList<JButton>();
 
         creerImages();
-        creerZoneNord();
-        creerZoneCentre();
+        
         creerZoneSud();
+        creerZoneCentre();
+        creerZoneNord();
+        
 
         add(panelNordGlobal, BorderLayout.NORTH);
         add(panelCentreGlobal, BorderLayout.CENTER);
@@ -88,36 +91,41 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
     }
 
     public void creerImages() {
-        image = new ImageIcon("cartes/Dracaufeu.png");
+        /*image = new ImageIcon("cartes/Qulbutoké.jpg");
         Image img = image.getImage();
-        Image imgRedim = img.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
+        Image imgRedim = img.getScaledInstance(	100, 130, Image.SCALE_SMOOTH);
         image = new ImageIcon(imgRedim);
 
-        img2 = new ImageIcon("cartes/pikachu.png");
+        img2 = new ImageIcon("cartes/Magicarpe.jpg");
         Image imgBas = img2.getImage();
-        Image imgRedim2 = imgBas.getScaledInstance(170, 130, Image.SCALE_SMOOTH);
+        Image imgRedim2 = imgBas.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
         img2 = new ImageIcon(imgRedim2);
-       
+        System.out.println(new File("cartes/Diancie.png").getAbsolutePath());
+        System.out.println(new File("cartes/Diancie.png").exists());
+        System.out.println(img2.getIconWidth());*/
+
     }
 
-    public void creerZoneNord() {
+    private void creerZoneNord() {
         panelNordGlobal = new JPanel();
         panelNordGlobal.setLayout(new BoxLayout(panelNordGlobal, BoxLayout.Y_AXIS));
 
         panelCartesNord = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         panelActionsNord = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 5; i++) {
             JButton b = new JButton();
             b.setPreferredSize(new Dimension(100, 130));
             b.setMargin(new Insets(0, 0, 0, 0));
             b.setFocusPainted(false);
             b.addActionListener(this);
+            b.setBorderPainted(false);
+            b.setContentAreaFilled(false);
             buttons.add(b);
             panelCartesNord.add(b);
         }
 
-        buttons.get(0).setIcon(image);
+        buttons.get(0).setIcon(image);*/
 
         attaquerNord = new JButton("Attaquer");
         pouvoirNord = new JButton("Utiliser pouvoir");
@@ -144,22 +152,31 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         panelCombatCentre.setLayout(new BoxLayout(panelCombatCentre, BoxLayout.Y_AXIS));
         panelCombatCentre.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-        slotHaut = new JButton();
+        slotHaut = new JButton("poser ici");
         slotHaut.setPreferredSize(new Dimension(100, 130));
         slotHaut.setMargin(new Insets(0, 0, 0, 0));
         slotHaut.setFocusPainted(false);
         slotHaut.addActionListener(this);
+        slotHaut.setBorderPainted(false);
+        slotHaut.setContentAreaFilled(false);
+        
+        
+        slotHaut.setContentAreaFilled(false);
 
-        slotBas = new JButton();
+        slotBas = new JButton("poser ici");
         slotBas.setPreferredSize(new Dimension(100, 130));
         slotBas.setMargin(new Insets(0, 0, 0, 0));
         slotBas.setFocusPainted(false);
         slotBas.addActionListener(this);
+        slotBas.setBorderPainted(false);
+        slotBas.setContentAreaFilled(false);
 
         barreVieHaut = new JProgressBar(0, 100);
         barreVieHaut.setValue(100);
         barreVieHaut.setStringPainted(true);
         barreVieHaut.setForeground(Color.green);
+        
+        
         barreVieHaut.setPreferredSize(new Dimension(180, 20));
         barreVieHaut.setMaximumSize(new Dimension(180, 20));
 
@@ -170,7 +187,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         barreVieBas.setPreferredSize(new Dimension(180, 20));
         barreVieBas.setMaximumSize(new Dimension(180, 20));
 
-        ImageIcon icon = new ImageIcon("cartes/logo.png");
+        ImageIcon icon = new ImageIcon("images/logo.png");
         Image img4 = icon.getImage();
         Image imgRedim4 = img4.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         logoLabel = new JLabel(new ImageIcon(imgRedim4));
@@ -209,7 +226,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         
     }
 
-    public void creerZoneSud() {
+    private void creerZoneSud() {
         panelSudGlobal = new JPanel();
         panelSudGlobal.setLayout(new BoxLayout(panelSudGlobal, BoxLayout.Y_AXIS));
 
@@ -228,7 +245,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
         panelActionsSud.add(pouvoirSud);
         panelActionsSud.add(changerSud);
 
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 8; i++) {
             JButton b = new JButton();
             b.setPreferredSize(new Dimension(100, 130));
             b.setMargin(new Insets(0, 0, 0, 0));
@@ -238,7 +255,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
             panelCartesSud.add(b);
         }
 
-        buttons2.get(1).setIcon(img2);
+        buttons2.get(1).setIcon(img2);*/
 
         panelSudGlobal.add(panelActionsSud);
         panelSudGlobal.add(panelCartesSud);
@@ -248,7 +265,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
 
         JButton boutonClique = (JButton) e.getSource();
-
+        
         if (boutonClique == attaquerNord) {
             System.out.println("J2 Nord attaque");
             barreVieBas.setValue(barreVieBas.getValue() - 10);
@@ -274,6 +291,7 @@ public class Testslot2 extends JPanel implements ActionListener, MouseListener {
             System.out.println("image selectionnee");
         }
         else if (boutonSelectionne != null && boutonClique.getIcon() == null) {
+        	boutonClique.setText("");
             boutonClique.setIcon(boutonSelectionne.getIcon());
             boutonSelectionne.setIcon(null);
             boutonSelectionne = null;

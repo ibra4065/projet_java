@@ -12,25 +12,37 @@ public class Joueur {
 	private final String nom;
 	private ArrayList<Carte> main;
 	private Carte personnageActif;
+	/**
+	 * @return the modechange
+	 */
+	public boolean isModechange() {
+		return modechange;
+	}
+
+
+	/**
+	 * @param modechange the modechange to set
+	 */
+	public void setModechange(boolean modechange) {
+		this.modechange = modechange;
+	}
 	private Stack<Carte> deck;
 	private boolean montour;
-	private final int indice_plateau;
+	private boolean modechange;
 	private Joueur adverse;
 	
 	 
 
-	public Joueur(String nom,Stack<Carte> deck,int ind) {
+	public Joueur(String nom,Stack<Carte> deck) {
 		this.nom = nom;
 		this.main = new ArrayList<Carte>();
 		this.deck=deck;
 		this.montour=false;
-		this.indice_plateau=ind;
 		etat=EtatJoueur.EN_VIE;
+		modechange=false;
 		
 	}
 	
-
-
 
 	public void pioche() {
 		if (!deck.isEmpty()) {
@@ -73,11 +85,9 @@ public class Joueur {
 	
 	
 	
-	
 
 
 	public String getNom() { return nom; }
-	public int getIndice_plateau() {return indice_plateau;}
 	public ArrayList<Carte> getMain() { return main; }
 	public Stack<Carte> getDeck() { return deck; }
 	public boolean isMonTour() { return montour; }

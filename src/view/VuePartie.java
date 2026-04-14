@@ -2,19 +2,26 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import controleur.Controleur;
+import model.Carte;
+import model.Joueur;
 import model.Modele;
+import model.Modele.Etat_partie;
 
 /* 
  * au debut de la partie chaque affichage 2 buttons piocher init pour chaque joueur 
@@ -24,138 +31,291 @@ import model.Modele;
 public class VuePartie extends JPanel implements Observer{
 	
 
-	Dimension dim = new Dimension(700,800);
-	Modele model;
-	Controleur cntrl;
+	private Dimension dim = new Dimension(1000,800);
+	private Modele model;
+	private Controleur cntrl;
 	
-	private final Image plt;
-	private Slot slot_J1;
-	private Slot Slot_J2;
-	private ArrayList<Slot> CartesJ1;
-	private ArrayList<Slot> CartesJ2;
-	JPanel ActionJ1;
-	JPanel ActionJ2;
+	private Image plt;
+	
+	// sud
+	JPanel ActionJ1; 
 	JPanel mainJ1;
-	JPanel mainJ2;
 	JPanel btnsJ1;
-	JPanel btnJ2;
+	
+	// nord
+	JPanel ActionJ2; 
+	JPanel btnsJ2;
+	JPanel mainJ2;
+	
+	
+	// centre 
+	JPanel PlateauCombat; 
+	JPanel panelCombatCentre;
+    JPanel panelSlotJ1;
+    JPanel panelMilieu;
+    JPanel panelSlotJ2;
+    
+    JButton attaquerJ1;
+    JButton utiliserpouvoirJ1;
+    JButton changerCarteJ1;
+    
+    JButton attaquerJ2;
+    JButton utiliserpouvoirJ2;
+    JButton changerCarteJ2;
+
+    JProgressBar barreJ1;
+    JProgressBar barreJ2;
+    
+	Slot slot_J1;
+	Slot slot_J2;
+	
+	JLabel logoLabel;
+	
+	
+	
 	
 	public VuePartie(Modele model, Controleur cntrl) {
 		super();
 		setPreferredSize(dim);
-        setLayout(null);
+        setLayout(new BorderLayout());
         
 		this.model = model;
 		this.cntrl = cntrl;
 		
-		CartesJ1=new ArrayList<>();
-		CartesJ1=new ArrayList<>();
+		creerZoneJ1();
+		creerZoneCentre();
+		creerZoneJ2();
 		
-		mainJ1=new JPanel();
-		mainJ2=new JPanel();
-		btnsJ1=new JPanel(); // Slot J1 pour poser sa carte 
-		btnJ2 = new JPanel();// Slot J2 pour poser sa carte 
-		ActionJ1=new JPanel();
-		ActionJ2 = new JPanel();
+        add(ActionJ1, BorderLayout.SOUTH);
+        add(PlateauCombat, BorderLayout.CENTER);
+        add(ActionJ2, BorderLayout.NORTH);
+        
 		
-		mainJ1.setLayout(new FlowLayout(FlowLayout.CENTER, 15, model.getJ1().getMain().size()));
-        mainJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
-		mainJ2.setLayout(new FlowLayout(FlowLayout.CENTER, 15, model.getJ2().getMain().size()));
-        mainJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
-        
-        plt=Toolkit.getDefaultToolkit().getImage("cartes/logo.png");
-        
-		for (int i=0;i<this.model.getJ1().getMain().size();i++) {
-			Slot s1 = new Slot(model.getJ1().getMain().get(i));
-			Slot s2 = new Slot(model.getJ2().getMain().get(i));
-			CartesJ1.add(s1);
-			mainJ1.add(s1);
-			CartesJ2.add(s2);
-			mainJ2.add(s2);
-			s1.addActionListener(this.cntrl);
-			s2.addActionListener(this.cntrl);	
-		}
-		for (int i=0;i<this.model.getJ2().getMain().size();i++) {
-			Slot s2 = new Slot(model.getJ2().getMain().get(i));
-			CartesJ2.add(s2);
-			mainJ2.add(s2);
-			s2.addActionListener(this.cntrl);	
-		}
+
+        refresh();
+
+	}
+	
+	private void refresh() {
+
+	    updatePlateau();
+	    updateMainJ1();
+	    updateMainJ2();
+	    updateButtons();
+
+	    revalidate();
+	    repaint();
+	}
+	
+	
+	private void creerZoneJ1() {
+	    ActionJ1 = new JPanel();
+	    ActionJ1.setLayout(new BoxLayout(ActionJ1, BoxLayout.Y_AXIS));
+
+	    btnsJ1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+	    mainJ1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+
+	    attaquerJ1 = new JButton("Attaquer");
+	    attaquerJ1.setActionCommand("ATTAQUER_J1");
+
+	    utiliserpouvoirJ1 = new JButton("Utiliser pouvoir");
+	    utiliserpouvoirJ1.setActionCommand("POUVOIR_J1");
+
+	    changerCarteJ1 = new JButton("Changer");
+	    changerCarteJ1.setActionCommand("CHANGER_J1");
+	    
+	    
+	    attaquerJ1.addActionListener(cntrl);
+	    utiliserpouvoirJ1.addActionListener(cntrl);
+	    changerCarteJ1.addActionListener(cntrl);
+
+	    btnsJ1.add(attaquerJ1);
+	    btnsJ1.add(utiliserpouvoirJ1);
+	    btnsJ1.add(changerCarteJ1);
+
+	    ActionJ1.add(btnsJ1);
+	    ActionJ1.add(mainJ1);
+	}
+	
+	
+	private void updateMainJ1() {
+
+	    mainJ1.removeAll();
+
+	    if (model.getEtat() == Etat_partie.DEBUT && model.getJ1().getMain().isEmpty())  {
+	        JButton piocherinit = new JButton("piocher");
+	        piocherinit.setActionCommand("PIOCHER_INIT_J1");
+	        piocherinit.addActionListener(cntrl);
+	        mainJ1.add(piocherinit);
+	    }
+	    else {
+	        for (Carte c : model.getJ1().getMain()) {
+	            Slot s = new Slot(c,model.getJ1());
+	            s.addActionListener(cntrl);
+	            mainJ1.add(s);
+	        }
+	    }
+
+	    mainJ1.revalidate();
+	    mainJ1.repaint();
+	}
+	
+	private void creerZoneJ2() {
+	    ActionJ2 = new JPanel();
+	    ActionJ2.setLayout(new BoxLayout(ActionJ2, BoxLayout.Y_AXIS));
+
+	    btnsJ2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+	    mainJ2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+
+	    attaquerJ2 = new JButton("Attaquer");
+	    attaquerJ2.setActionCommand("ATTAQUER_J2");
+
+	    utiliserpouvoirJ2 = new JButton("Utiliser pouvoir");
+	    utiliserpouvoirJ2.setActionCommand("POUVOIR_J2");
+
+	    changerCarteJ2 = new JButton("Changer");
+	    changerCarteJ2.setActionCommand("CHANGER_J2");
+
+	    attaquerJ2.addActionListener(cntrl);
+	    utiliserpouvoirJ2.addActionListener(cntrl);
+	    changerCarteJ2.addActionListener(cntrl);
+
+	    btnsJ2.add(attaquerJ2);
+	    btnsJ2.add(utiliserpouvoirJ2);
+	    btnsJ2.add(changerCarteJ2);
+	    
+	    ActionJ2.add(mainJ2);
+	    ActionJ2.add(btnsJ2);
+	    
+	}
+	
+	private void updateMainJ2() {
 		
-		slot_J1 = new Slot();
-		slot_J1.setBounds((dim.width-112)/2, (dim.height-130)/2 + 85, 100, 130);
-		slot_J1.setMargin(new Insets(0, 0, 0, 0));
-        slot_J1.setFocusPainted(false);
-        slot_J1.addActionListener(this.cntrl);
+	    mainJ2.removeAll();
+
+	    if (model.getEtat() == Etat_partie.DEBUT && model.getJ2().getMain().isEmpty()) {
+	        JButton piocherinit = new JButton("piocher");
+	        piocherinit.setActionCommand("PIOCHER_INIT_J2");
+	        piocherinit.addActionListener(cntrl);
+	        mainJ2.add(piocherinit);
+	    }
+	    else {
+	        for (Carte c : model.getJ2().getMain()) {
+	            Slot s = new Slot(c,model.getJ2());
+	            s.addActionListener(cntrl);
+	            mainJ2.add(s);
+	        }
+	    }
+
+	    mainJ2.revalidate();
+	    mainJ2.repaint();
+	    
+	}
+	
+	private void creerZoneCentre() {
+        PlateauCombat = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5));
+
+        panelCombatCentre = new JPanel();
+        panelCombatCentre.setLayout(new BoxLayout(panelCombatCentre, BoxLayout.Y_AXIS));
+        panelCombatCentre.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        slot_J1 = new Slot(model.getJ1());
+        slot_J1.addActionListener(cntrl);
+
+        slot_J2 = new Slot(model.getJ2());
+        slot_J2.addActionListener(cntrl);
+
+        barreJ1 = new JProgressBar(0, 100);
+        barreJ1.setStringPainted(true);
+        barreJ1.setPreferredSize(new Dimension(180, 20));
+        barreJ1.setMaximumSize(new Dimension(180, 20));
+
+        barreJ2 = new JProgressBar(0, 100);
+        barreJ2.setStringPainted(true);
+        barreJ2.setPreferredSize(new Dimension(180, 20));
+        barreJ2.setMaximumSize(new Dimension(180, 20));
+
+        ImageIcon icon = new ImageIcon("images/logo.png");
+        plt = icon.getImage();
+        Image imgRedim4 = plt.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        logoLabel = new JLabel(new ImageIcon(imgRedim4));
+
+        panelSlotJ2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelSlotJ2.add(slot_J2);
+
+        panelMilieu = new JPanel();
+        panelMilieu.setLayout(new BoxLayout(panelMilieu, BoxLayout.Y_AXIS));
+
+        JPanel panelBarreHaut = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelBarreHaut.add(barreJ2);
+
+        JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelLogo.add(logoLabel);
+
+        JPanel panelBarreBas = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelBarreBas.add(barreJ1);
+
+        panelMilieu.add(panelBarreHaut);
+        panelMilieu.add(Box.createVerticalStrut(5));
+        panelMilieu.add(panelLogo);
+        panelMilieu.add(Box.createVerticalStrut(5));
+        panelMilieu.add(panelBarreBas);
+
+        panelSlotJ1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelSlotJ1.add(slot_J1);
+
+        panelCombatCentre.add(panelSlotJ2);
+        panelCombatCentre.add(Box.createVerticalStrut(5));
+        panelCombatCentre.add(panelMilieu);
+        panelCombatCentre.add(Box.createVerticalStrut(5));
+        panelCombatCentre.add(panelSlotJ1);
+
+        PlateauCombat.add(panelCombatCentre);
         
-		Slot_J2 = new Slot();
-		slot_J1.setBounds((dim.width-112)/2, (dim.height-130)/2 - 125, 100, 130);
-		Slot_J2.setMargin(new Insets(0, 0, 0, 0));
-        Slot_J2.setFocusPainted(false);
-        Slot_J2.addActionListener(this.cntrl);
-        
-		add(mainJ1,BorderLayout.SOUTH);
-		add(mainJ2,BorderLayout.NORTH);
-		add(slot_J1);
-		add(Slot_J2);
+    }
+	
+	private void updatePV(JProgressBar barre, Joueur j) {
+	    if (j.getPersonnageActif() == null) {
+	        barre.setMaximum(100);
+	        barre.setValue(0);
+	        barre.setString("0 / 0");
+	        return;
+	    }
+
+	    Carte c = j.getPersonnageActif();
+
+	    barre.setMaximum(c.getPvmax());
+	    barre.setValue(c.getPv());
+	    barre.setString(c.getPv() + " / " + c.getPvmax());
+
+	    if (c.getPv() < c.getPvmax() * 0.25) {
+	        barre.setForeground(Color.RED);
+	    } else {
+	        barre.setForeground(Color.GREEN);
+	    }
+	}
+	
+	private void updateButtons() {
+		attaquerJ1.setEnabled(model.peutAttaquer(model.getJ1()));
+		attaquerJ2.setEnabled(model.peutAttaquer(model.getJ2()));
+
+		utiliserpouvoirJ1.setEnabled(model.peutUtiliserPouvoir(model.getJ1()));
+		utiliserpouvoirJ2.setEnabled(model.peutUtiliserPouvoir(model.getJ2()));
+
+		changerCarteJ1.setEnabled(model.peutChangerCarte(model.getJ1()));
+		changerCarteJ2.setEnabled(model.peutChangerCarte(model.getJ2()));
+	}
+	
+	private void updatePlateau() {
+		updatePV(barreJ1, model.getJ1());
+		updatePV(barreJ2, model.getJ2());
+		slot_J1.setCarte(model.getJ1().getPersonnageActif());
+		slot_J2.setCarte(model.getJ2().getPersonnageActif());
 		
 	}
-
-	
-	/* a modifier les rectangle du pv au fonction du pv du la carte actif*/
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int width = getWidth();
-        int height = getHeight();
-
-        int centreY = height / 2;
-
-        int barreWidth = 120;
-        int barreHeight = 12;
-
-        int x = (width - barreWidth) / 2;
-
-        int y1 = centreY - 35;
-        int y2 = centreY + 20;
-
-        g.setColor(Color.green);
-        g.fillRect(x, y1, barreWidth, barreHeight);
-        g.fillRect(x, y2, barreWidth, barreHeight);
-
-        g.setColor(Color.BLACK);
-        g.drawRect(x, y1, barreWidth, barreHeight);
-        g.drawRect(x, y2, barreWidth, barreHeight);
-
-        g.drawImage(plt,
-                (width - 50) / 2,
-                (height - 50) / 2,
-                50,
-                50,
-                this
-        );
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	@Override
 	public void update(Observable o, Object arg) {
-		repaint();
+		refresh();
 		
 	}
 

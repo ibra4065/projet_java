@@ -2,65 +2,97 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JButton;
 
 import model.Modele;
 import view.Slot;
 
-public class Controleur implements ActionListener ,MouseListener{
-	
-	private Modele model;
-	private Slot slotslectioneé;
-	
-	
-	public Controleur(Modele model) {
-		this.model = model;
-	}
+public class Controleur implements ActionListener {
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+    private Modele model;
+    private Slot carteSelectionnee;
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+    public Controleur(Modele model) {
+        this.model = model;
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+        if (source instanceof Slot) {
+            Slot slotClique = (Slot) source;
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+            if (model.modeSelection()) {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Slot slotcliquer = (Slot)e.getSource();
-		if (slotcliquer.getIcon()!=null) {
-			slotslectioneé=slotcliquer;
-			slotslectioneé.setSelect(true);
-		}
-		
-		
-	}
+                if (!slotClique.isSlot_plt() && slotClique.getCarte() != null) {
+                    carteSelectionnee = slotClique;
+                    System.out.println("Carte sélectionnée : " + slotClique.getCarte().getNom());
+                    return;
+                }
 
+                if (slotClique.isSlot_plt()) {
+                    if (carteSelectionnee == null) {
+                        System.out.println("Aucune carte sélectionnée");
+                        return;
+                    }
+
+                    if (carteSelectionnee.getProprietaire() == slotClique.getProprietaire()) {
+                        model.poserCarteDebut(carteSelectionnee.getProprietaire(), carteSelectionnee.getCarte());
+                        carteSelectionnee = null;
+                    } else {
+                        System.out.println("Tu dois poser la carte sur ton propre plateau");
+                    }
+                    return;
+                }
+            }
+
+            if (model.getCourant() != null && model.getCourant().isModechange()) {
+                if (!slotClique.isSlot_plt()
+                        && slotClique.getProprietaire() == model.getCourant()
+                        && slotClique.getCarte() != null) {
+                    model.changementCarte(model.getCourant(), slotClique.getCarte());
+                }
+                return;
+            }
+
+            return;
+        }
+
+        String cmd = e.getActionCommand();
+        if (cmd == null) return;
+
+        switch (cmd) {
+            case "ATTAQUER_J1":
+                model.JoueurAttack(model.getJ1());
+                break;
+
+            case "POUVOIR_J1":
+                model.UtilisePouvoir(model.getJ1());
+                break;
+
+            case "CHANGER_J1":
+                model.activerModeChangement(model.getJ1());
+                break;
+
+            case "ATTAQUER_J2":
+                model.JoueurAttack(model.getJ2());
+                break;
+
+            case "POUVOIR_J2":
+                model.UtilisePouvoir(model.getJ2());
+                break;
+
+            case "CHANGER_J2":
+                model.activerModeChangement(model.getJ2());
+                break;
+                
+            case "PIOCHER_INIT_J1":
+                model.piocherinit(model.getJ1());;
+                break;
+            case "PIOCHER_INIT_J2":
+                model.piocherinit(model.getJ2());;
+                System.out.println("pioche faite!");
+                break;
+        }
+    }
 }

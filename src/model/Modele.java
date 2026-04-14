@@ -22,37 +22,30 @@ public class Modele extends Observable{
 	};
 	
 	private int tour;
-	private final int taillPlateau=2;
 	private Etat_partie etat;
 	private BibliothequeCartes biblio;
 	private Joueur J1;
 	private Joueur J2;
 	private Joueur courant;
-	private Carte[] plateau;
 	private boolean piocheFaite;
 	
 	public Modele() {
 		this.biblio=new BibliothequeCartes();
-		J1 = new Joueur("J1", biblio.creerDeckAleatoire(5),0);
-		J2 = new Joueur("J2", biblio.creerDeckAleatoire(5),1);
-		plateau = new Carte[taillPlateau];
+		J1 = new Joueur("J1", biblio.creerDeckAleatoire(5));
+		J2 = new Joueur("J2", biblio.creerDeckAleatoire(5));
 		tour=0;
 		this.etat=Etat_partie.DEBUT;
-		J1.piocherMainInitiale();
-		J2.piocherMainInitiale();
+		/*J1.piocherMainInitiale();
+		J2.piocherMainInitiale();*/
 		J1.initJoueurAdverse(J2);
 		J2.initJoueurAdverse(J1);
 		piocheFaite = false;
 	}
 	
 	
-	private void majPlateau() {
-	    plateau[0] = J1.getPersonnageActif();
-	    plateau[1] = J2.getPersonnageActif();
-	}
-	
 
-	private boolean modeSelection() {
+
+	public boolean modeSelection() {
 	    return etat == Etat_partie.DEBUT;
 	    // ou 
 	    // return (J1.getPersonnageActif() == null || J2.getPersonnageActif() == null);
@@ -101,13 +94,14 @@ public class Modele extends Observable{
 	
 	public void poserCarteDebut(Joueur j, Carte c) {
 	    if (!modeSelection()) return;
+	    if (j == null || c == null) return;
+	    if (j.getPersonnageActif() != null) return;
+	    if (!j.getMain().contains(c)) return;
 
 	    j.poserCarte(c);
-	    majPlateau();                 
+	    verifierPassageEnCours();
 
-	    verifierPassageEnCours();     
-
-	    setChanged();                 
+	    setChanged();
 	    notifyObservers();
 	}
 	
@@ -115,10 +109,17 @@ public class Modele extends Observable{
 	
 	public void changementCarte(Joueur j, Carte c) {
 	    if (etat != Etat_partie.EN_COURS) return;
+	    if (j == null || c == null) return;
 	    if (j != courant) return;
-
+	    if (!j.isModechange()) return;
+	    if (!j.getMain().contains(c)) return;
 	    j.ChangerCarte(c);
-	    majPlateau();
+	    j.setModechange(false);
+
+	    verifierFin(j);
+	    if (etat == Etat_partie.EN_COURS) {
+	        prochainJoueur();
+	    }
 
 	    setChanged();
 	    notifyObservers();
@@ -128,11 +129,11 @@ public class Modele extends Observable{
 	    if (etat != Etat_partie.EN_COURS) return;
 	    if (j != courant) return;
 	    if (j.getPersonnageActif() == null) return;
-	    if (j.getAdverse().getPersonnageActif()== null) return;
+	    if (j.getAdverse().getPersonnageActif() == null) return;
 	    if (!j.getPersonnageActif().isUtilisable()) return;
-	    if (!j.getAdverse().getPersonnageActif().isUtilisable()) return;
-	    courant.getPersonnageActif().attaquer(courant.getAdverse().getPersonnageActif());
-	    majPlateau();
+
+	    j.getPersonnageActif().attaquer(j.getAdverse().getPersonnageActif());
+
 	    verifierFin(j);
 	    if (etat == Etat_partie.EN_COURS) prochainJoueur();
 
@@ -150,11 +151,9 @@ public class Modele extends Observable{
 	    if (!j.getPersonnageActif().getPouvoir().isEtat()) return;
 
 	    j.getPersonnageActif().utiliserPouvoir(j.getAdverse().getPersonnageActif());
-	    majPlateau();
-	    verifierFin(j); 
+
+	    verifierFin(j);
 	    if (etat == Etat_partie.EN_COURS) prochainJoueur();
-	   
-	    
 
 	    setChanged();
 	    notifyObservers();
@@ -172,16 +171,77 @@ public class Modele extends Observable{
 	}
 	
 	public void reset() {
-		
+	    this.biblio = new BibliothequeCartes();
+	    J1 = new Joueur("J1", biblio.creerDeckAleatoire(5));
+	    J2 = new Joueur("J2", biblio.creerDeckAleatoire(5));
+	    J1.initJoueurAdverse(J2);
+	    J2.initJoueurAdverse(J1);
+	    tour = 0;
+	    etat = Etat_partie.DEBUT;
+	    courant = null;
+	    piocheFaite = false;
+
+	    setChanged();
+	    notifyObservers();
+	}
+	
+	public void activerModeChangement(Joueur j) {
+	    if (etat != Etat_partie.EN_COURS) return;
+	    if (j == null) return;
+	    if (j != courant) return;
+	    if (j.getPersonnageActif() == null) return;
+	    if (j.getPersonnageActif().isUtilisable()) return;
+
+	    j.setModechange(true);
+
+	    setChanged();
+	    notifyObservers();
+	}
+	
+	public boolean peutChangerCarte(Joueur j) {
+	    if (j == null) return false;
+	    if (etat != Etat_partie.EN_COURS) return false;
+	    if (!j.isMonTour()) return false;
+	    if (j.getPersonnageActif() == null) return false;
+
+	    return !j.getPersonnageActif().isUtilisable();
+	}
+	
+	public boolean peutUtiliserPouvoir(Joueur j) {
+	    if (j == null) return false;
+	    if (etat != Etat_partie.EN_COURS) return false;
+	    if (!j.isMonTour()) return false;
+	    if (j.getPersonnageActif() == null) return false;
+	    if (j.getAdverse() == null || j.getAdverse().getPersonnageActif() == null) return false;
+	    if (!j.getPersonnageActif().isUtilisable()) return false;
+	    if (j.getPersonnageActif().getPouvoir() == null) return false;
+
+	    return j.getPersonnageActif().getPouvoir().isEtat();
+	}
+	
+	public boolean peutAttaquer(Joueur j) {
+	    if (j == null) return false;
+	    if (etat != Etat_partie.EN_COURS) return false;
+	    if (!j.isMonTour()) return false;
+	    if (j.getPersonnageActif() == null) return false;
+	    if (j.getAdverse() == null || j.getAdverse().getPersonnageActif() == null) return false;
+
+	    return j.getPersonnageActif().isUtilisable();
+	}
+	
+	public void piocherinit(Joueur j) {
+		j.piocherMainInitiale();
+		setChanged();
+	    notifyObservers();
 	}
 	
 	public int getTour() {return tour;}
 	public Joueur getJ1() {return J1;}
 	public Joueur getJ2() {return J2;}
 	public Joueur getCourant() {return courant;}
-	public Carte[] getPlateau() {return plateau;}
 	public Etat_partie getEtat() {return etat;}
 	public void setEtat(Etat_partie etat) {this.etat = etat;}
+	
 	
 	
 

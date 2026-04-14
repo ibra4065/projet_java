@@ -1,82 +1,136 @@
 package view;
 
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import model.Carte;
+import model.Joueur;
 
 public class Slot extends JButton {
 
     private boolean libre;
-    private Image img;
     private ImageIcon imgcarte;
     private Carte carte;
     private boolean select;
-	private final Dimension dimbtn=new Dimension(100,130);
+    private final boolean slot_plt;
+    private final Joueur proprietaire;
 
-    public Slot() {
+    private final Dimension dimbtn = new Dimension(100, 130);
+
+    // slot du plateau
+    public Slot(Joueur proprietaire) {
+        this.proprietaire = proprietaire;
         this.libre = true;
         this.select = false;
+        this.slot_plt = true;
+
+        setText("poser ici");
+        setPreferredSize(dimbtn);
+        setFocusPainted(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
     }
-    
-    public Slot(Carte c) {
-    	this.setPreferredSize(dimbtn);
-    	this.setFocusPainted(false);
-    	this.carte = c;
-    	this.img = Toolkit.getDefaultToolkit().getImage("cartes/" + c.getNom() + ".png");
-    	Image imgRedim = img.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
-    	imgcarte=new ImageIcon(imgRedim);
-        this.libre = false;
+
+    // slot de la main
+    public Slot(Carte c, Joueur proprietaire) {
+        this.slot_plt = false;
+        this.proprietaire = proprietaire;
+        this.libre = true;
         this.select = false;
-    	this.setIcon(imgcarte);
+
+        setFocusPainted(false);
+        setPreferredSize(dimbtn);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+
+        setCarte(c);
     }
 
     public void remplirSlot(Carte c) {
-        this.carte = c;
-        this.img = Toolkit.getDefaultToolkit().getImage("cartes/" + c.getNom() + ".png");
-        this.libre = false;
-        this.select = false;
+        setCarte(c);
+        select = false;
     }
 
-    public void deplacerSlot(Slot s) {
+    public void deplacerCarte(Slot s) {
         if (this.libre) return;
         if (!s.libre) return;
 
-        s.carte = this.carte;
-        s.img = this.img;
-        s.libre = false;
-        s.select = false;
-
-        this.carte = null;
-        this.img = null;
-        this.libre = true;
-        this.select = false;
-    }
-    
-    public void viderSlot() {
-    	libre=true;
-    	select=false;
-    	img=null;
-    	carte=null;
+        s.setCarte(this.carte);
+        this.viderSlot();
     }
 
-    public boolean isLibre() { return libre; }
-    public void setLibre(boolean libre) { this.libre = libre; }
+    private void viderSlot() {
+        libre = true;
+        select = false;
+        carte = null;
+        imgcarte = null;
 
-    public Image getImg() { return img; }
-    public void setImg(Image img) { this.img = img; }
+        setIcon(null);
 
-    public Carte getCarte() { return carte; }
-    public void setCarte(Carte carte) { this.carte = carte; }
+        if (slot_plt) {
+            setText("poser ici");
+        } else {
+            setText(null);
+        }
 
+        repaint();
+    }
 
-    public boolean isSelect() { return select; }
-    public void setSelect(boolean select) { this.select = select; }
-    
-    
+    public void setCarte(Carte c) {
+        if (carte == c || (carte != null && carte.equals(c))) return;
+
+        carte = c;
+
+        if (c == null) {
+            imgcarte = null;
+            setIcon(null);
+            libre = true;
+
+            if (slot_plt) {
+                setText("poser ici");
+            } else {
+                setText(null);
+            }
+
+            repaint();
+            return;
+        }
+
+        ImageIcon icon = new ImageIcon("cartes/" + c.getNom() + ".jpg");
+        Image imgRedim = icon.getImage().getScaledInstance(100, 130, Image.SCALE_SMOOTH);
+
+        imgcarte = new ImageIcon(imgRedim);
+        setIcon(imgcarte);
+        setText(null);
+
+        libre = false;
+        repaint();
+    }
+
+    public boolean isLibre() {
+        return libre;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public Carte getCarte() {
+        return carte;
+    }
+
+    public boolean isSlot_plt() {
+        return slot_plt;
+    }
+
+    public Joueur getProprietaire() {
+        return proprietaire;
+    }
 }
