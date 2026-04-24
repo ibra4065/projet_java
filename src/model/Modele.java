@@ -21,6 +21,8 @@ public class Modele extends Observable{
 		
 	};
 	
+	public enum Mode{Normal,IA};
+	
 	private int tour;
 	private Etat_partie etat;
 	private BibliothequeCartes biblio;
@@ -31,12 +33,10 @@ public class Modele extends Observable{
 	
 	public Modele() {
 		this.biblio=new BibliothequeCartes();
-		J1 = new Joueur("J1", biblio.creerDeckAleatoire(5));
+		J1 = new Joueur("J1", biblio.creerDeckAleatoire(3));
 		J2 = new Joueur("J2", biblio.creerDeckAleatoire(5));
 		tour=0;
 		this.etat=Etat_partie.DEBUT;
-		/*J1.piocherMainInitiale();
-		J2.piocherMainInitiale();*/
 		J1.initJoueurAdverse(J2);
 		J2.initJoueurAdverse(J1);
 		piocheFaite = false;
@@ -58,13 +58,20 @@ public class Modele extends Observable{
 	        J1.setMontour(false);
 	        J2.setMontour(true);
 	        courant = J2;
+
 	    } else {
 	        J2.setMontour(false);
 	        J1.setMontour(true);
 	        courant = J1;
 	    }
+
 	    tour++;
 	    piocheFaite=false;
+	    for (Carte c :courant.getMain()) {
+        	c.diminuerStatuts();
+        }
+	    courant.getPersonnageActif().diminuerStatuts();
+	    
 	}
 	
 	private boolean verifierPassageEnCours() {
@@ -86,6 +93,8 @@ public class Modele extends Observable{
 			j.setEtat(EtatJoueur.GAGNE);
 			j.getAdverse().setEtat(EtatJoueur.PERDU);
 			etat=Etat_partie.FIN;
+			setChanged();
+		    notifyObservers(this.etat);
 
 		}
 	}
@@ -114,8 +123,15 @@ public class Modele extends Observable{
 	    if (!j.isModechange()) return;
 	    if (!j.getMain().contains(c)) return;
 	    j.ChangerCarte(c);
-	    j.setModechange(false);
-
+	    if (j.getPersonnageActif().isUtilisable()) {
+	    	j.setChanger_encours(1);
+	    	j.setModechange(false);
+	    }
+	    else {
+	    	j.setModechange(false);
+	    	
+	    }
+	    
 	    verifierFin(j);
 	    if (etat == Etat_partie.EN_COURS) {
 	        prochainJoueur();
@@ -135,6 +151,7 @@ public class Modele extends Observable{
 	    j.getPersonnageActif().attaquer(j.getAdverse().getPersonnageActif());
 
 	    verifierFin(j);
+
 	    if (etat == Etat_partie.EN_COURS) prochainJoueur();
 
 	    setChanged();
@@ -151,23 +168,28 @@ public class Modele extends Observable{
 	    if (!j.getPersonnageActif().getPouvoir().isEtat()) return;
 
 	    j.getPersonnageActif().utiliserPouvoir(j.getAdverse().getPersonnageActif());
-
 	    verifierFin(j);
-	    if (etat == Etat_partie.EN_COURS) prochainJoueur();
-
+	    
+	    if (etat == Etat_partie.EN_COURS && j.getPersonnageActif().getPouvoir().isConsommetour()) prochainJoueur();
+	    
+	    
 	    setChanged();
-	    notifyObservers();
+	    notifyObservers();	
+	    
+	    
+	    
 	}
 	
-	public void piocher() {
+	public void piocher(Joueur j) {
 		if (etat != Etat_partie.EN_COURS) return;
 		if (courant == null) return;
 		if (piocheFaite) return;
-		courant.pioche();
+		j.pioche();
 		piocheFaite=true;
 		
 		setChanged();
 	    notifyObservers();
+	    
 	}
 	
 	public void reset() {
@@ -190,11 +212,18 @@ public class Modele extends Observable{
 	    if (j == null) return;
 	    if (j != courant) return;
 	    if (j.getPersonnageActif() == null) return;
-	    if (j.getPersonnageActif().isUtilisable()) return;
+	    if (j.getPersonnageActif().isUtilisable() && j.getChanger_encours()<=0) return;
+	    
 
 	    j.setModechange(true);
 
 	    setChanged();
+	    notifyObservers();
+	}
+	
+	public void passertour() {
+		prochainJoueur();
+		setChanged();
 	    notifyObservers();
 	}
 	
@@ -204,7 +233,7 @@ public class Modele extends Observable{
 	    if (!j.isMonTour()) return false;
 	    if (j.getPersonnageActif() == null) return false;
 
-	    return !j.getPersonnageActif().isUtilisable();
+	    return !j.getPersonnageActif().isUtilisable() || j.getChanger_encours()>0;
 	}
 	
 	public boolean peutUtiliserPouvoir(Joueur j) {
@@ -233,6 +262,13 @@ public class Modele extends Observable{
 		j.piocherMainInitiale();
 		setChanged();
 	    notifyObservers();
+	}
+	
+	public boolean peutpasser(Joueur j) {
+		if (j.getPersonnageActif()==null) return false;
+		if (etat != Etat_partie.EN_COURS) return false;
+		if (!j.isMonTour()) return false;
+		return !j.getPersonnageActif().isUtilisable() && !j.getPersonnageActif().isKO();
 	}
 	
 	public int getTour() {return tour;}

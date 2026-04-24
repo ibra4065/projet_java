@@ -2,9 +2,11 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -58,10 +60,14 @@ public class VuePartie extends JPanel implements Observer{
     JButton attaquerJ1;
     JButton utiliserpouvoirJ1;
     JButton changerCarteJ1;
+    JButton piocherJ1;
+    JButton passerJ1;
     
     JButton attaquerJ2;
     JButton utiliserpouvoirJ2;
     JButton changerCarteJ2;
+    JButton piocherJ2;
+    JButton passerJ2;
 
     JProgressBar barreJ1;
     JProgressBar barreJ2;
@@ -70,6 +76,11 @@ public class VuePartie extends JPanel implements Observer{
 	Slot slot_J2;
 	
 	JLabel logoLabel;
+	
+	JPanel panelFin;
+	JLabel labelGagnant;
+	JButton btnRejouer;
+	JButton btnQuitterFin;
 	
 	
 	
@@ -83,7 +94,9 @@ public class VuePartie extends JPanel implements Observer{
 		this.cntrl = cntrl;
 		
 		creerZoneJ1();
+		creerPanelFin();
 		creerZoneCentre();
+		
 		creerZoneJ2();
 		
         add(ActionJ1, BorderLayout.SOUTH);
@@ -102,6 +115,7 @@ public class VuePartie extends JPanel implements Observer{
 	    updateMainJ1();
 	    updateMainJ2();
 	    updateButtons();
+	    updateFinPartie();
 
 	    revalidate();
 	    repaint();
@@ -109,11 +123,16 @@ public class VuePartie extends JPanel implements Observer{
 	
 	
 	private void creerZoneJ1() {
+		
 	    ActionJ1 = new JPanel();
 	    ActionJ1.setLayout(new BoxLayout(ActionJ1, BoxLayout.Y_AXIS));
 
 	    btnsJ1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 	    mainJ1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+	    
+	    mainJ1.setPreferredSize(new Dimension(1000, 150));
+	    mainJ1.setMinimumSize(new Dimension(1000, 150));
+	    mainJ1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
 
 	    attaquerJ1 = new JButton("Attaquer");
 	    attaquerJ1.setActionCommand("ATTAQUER_J1");
@@ -124,19 +143,97 @@ public class VuePartie extends JPanel implements Observer{
 	    changerCarteJ1 = new JButton("Changer");
 	    changerCarteJ1.setActionCommand("CHANGER_J1");
 	    
+	    piocherJ1 = new JButton("piocher");
+	    piocherJ1.setActionCommand("piocherJ1");
+	    
+	    passerJ1 = new JButton("passer");
+	    passerJ1.setActionCommand("passerJ1");
 	    
 	    attaquerJ1.addActionListener(cntrl);
 	    utiliserpouvoirJ1.addActionListener(cntrl);
 	    changerCarteJ1.addActionListener(cntrl);
+	    piocherJ1.addActionListener(cntrl);
+	    passerJ1.addActionListener(cntrl);
+
 
 	    btnsJ1.add(attaquerJ1);
 	    btnsJ1.add(utiliserpouvoirJ1);
 	    btnsJ1.add(changerCarteJ1);
+	    btnsJ1.add(piocherJ1);
+	    btnsJ1.add(passerJ1);
+
 
 	    ActionJ1.add(btnsJ1);
 	    ActionJ1.add(mainJ1);
 	}
 	
+	
+	private void creerPanelFin() {
+	    panelFin = new JPanel();
+	    panelFin.setLayout(new BoxLayout(panelFin, BoxLayout.Y_AXIS));
+	    panelFin.setOpaque(false);
+	    panelFin.setVisible(false);
+
+	    labelGagnant = new JLabel("", JLabel.CENTER);
+	    labelGagnant.setFont(new Font("SansSerif", Font.BOLD, 32));
+	    labelGagnant.setForeground(Color.RED);
+	    labelGagnant.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	    btnRejouer = new JButton("Rejouer");
+	    btnRejouer.setFont(new Font("SansSerif", Font.PLAIN, 22));
+	    btnRejouer.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	    btnQuitterFin = new JButton("Quitter");
+	    btnQuitterFin.setFont(new Font("SansSerif", Font.PLAIN, 22));
+	    btnQuitterFin.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	    btnRejouer.addActionListener(e -> model.reset());
+
+	    btnQuitterFin.addActionListener(e -> System.exit(0));
+
+	    panelFin.add(labelGagnant);
+	    panelFin.add(Box.createRigidArea(new Dimension(0, 20)));
+	    panelFin.add(btnRejouer);
+	    panelFin.add(Box.createRigidArea(new Dimension(0, 10)));
+	    panelFin.add(btnQuitterFin);
+	}
+	private void updateFinPartie() {
+	    if (model.getEtat() == Etat_partie.FIN) {
+
+	        String gagnant = "";
+
+	        if (model.getJ1().getEtat() == Joueur.EtatJoueur.GAGNE) {
+	            gagnant = "Joueur 1 a gagné !";
+	        } 
+	        else if (model.getJ2().getEtat() == Joueur.EtatJoueur.GAGNE) {
+	            gagnant = "Joueur 2 a gagné !";
+	        } 
+	        else {
+	            gagnant = "Partie terminée !";
+	        }
+
+	        labelGagnant.setText(gagnant);
+
+	        panelCombatCentre.setVisible(false);
+	        panelFin.setVisible(true);
+
+	        attaquerJ1.setEnabled(false);
+	        utiliserpouvoirJ1.setEnabled(false);
+	        changerCarteJ1.setEnabled(false);
+	        piocherJ1.setEnabled(false);
+	        passerJ1.setEnabled(false);
+
+	        attaquerJ2.setEnabled(false);
+	        utiliserpouvoirJ2.setEnabled(false);
+	        changerCarteJ2.setEnabled(false);
+	        piocherJ2.setEnabled(false);
+	        passerJ2.setEnabled(false);
+
+	    } else {
+	        panelCombatCentre.setVisible(true);
+	        panelFin.setVisible(false);
+	    }
+	}
 	
 	private void updateMainJ1() {
 
@@ -166,7 +263,11 @@ public class VuePartie extends JPanel implements Observer{
 
 	    btnsJ2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 	    mainJ2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-
+	    
+	    mainJ2.setPreferredSize(new Dimension(1000, 150));
+	    mainJ2.setMinimumSize(new Dimension(1000, 150));
+	    mainJ2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
+	    
 	    attaquerJ2 = new JButton("Attaquer");
 	    attaquerJ2.setActionCommand("ATTAQUER_J2");
 
@@ -175,14 +276,24 @@ public class VuePartie extends JPanel implements Observer{
 
 	    changerCarteJ2 = new JButton("Changer");
 	    changerCarteJ2.setActionCommand("CHANGER_J2");
+	    
+	    piocherJ2 = new JButton("piocher");
+	    piocherJ2.setActionCommand("piocherJ2");
+	    
+	    passerJ2 = new JButton("passer");
+	    passerJ2.setActionCommand("passerJ2");
 
 	    attaquerJ2.addActionListener(cntrl);
 	    utiliserpouvoirJ2.addActionListener(cntrl);
 	    changerCarteJ2.addActionListener(cntrl);
+	    piocherJ2.addActionListener(cntrl);
+	    passerJ2.addActionListener(cntrl);
 
 	    btnsJ2.add(attaquerJ2);
 	    btnsJ2.add(utiliserpouvoirJ2);
 	    btnsJ2.add(changerCarteJ2);
+	    btnsJ2.add(piocherJ2);
+	    btnsJ2.add(passerJ2);
 	    
 	    ActionJ2.add(mainJ2);
 	    ActionJ2.add(btnsJ2);
@@ -271,6 +382,7 @@ public class VuePartie extends JPanel implements Observer{
         panelCombatCentre.add(panelSlotJ1);
 
         PlateauCombat.add(panelCombatCentre);
+        PlateauCombat.add(panelFin);
         
     }
 	
@@ -288,11 +400,9 @@ public class VuePartie extends JPanel implements Observer{
 	    barre.setValue(c.getPv());
 	    barre.setString(c.getPv() + " / " + c.getPvmax());
 
-	    if (c.getPv() < c.getPvmax() * 0.25) {
-	        barre.setForeground(Color.RED);
-	    } else {
-	        barre.setForeground(Color.GREEN);
-	    }
+	    if (c.getPv() < c.getPvmax() * 0.25) barre.setForeground(Color.RED);
+	    else if (c.getPv() < c.getPvmax() * 0.50) barre.setForeground(Color.YELLOW);
+	    else barre.setForeground(Color.GREEN);
 	}
 	
 	private void updateButtons() {
@@ -304,6 +414,9 @@ public class VuePartie extends JPanel implements Observer{
 
 		changerCarteJ1.setEnabled(model.peutChangerCarte(model.getJ1()));
 		changerCarteJ2.setEnabled(model.peutChangerCarte(model.getJ2()));
+		
+		passerJ1.setEnabled(model.peutpasser(model.getJ1()));
+		passerJ2.setEnabled(model.peutpasser(model.getJ2()));
 	}
 	
 	private void updatePlateau() {
@@ -316,7 +429,6 @@ public class VuePartie extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		refresh();
-		
 	}
 
 

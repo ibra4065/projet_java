@@ -93,6 +93,19 @@ public class Controleur implements ActionListener {
                 model.piocherinit(model.getJ2());;
                 System.out.println("pioche faite!");
                 break;
+                
+            case "piocherJ1":
+            	model.piocher(model.getJ1());
+            	break;
+            case "piocherJ2":
+            	model.piocher(model.getJ2());
+            	break;
+            case "passerJ21":
+            	model.passertour();
+            	break;
+            case "passerJ2":
+            	model.passertour();
+            	break;
         }
     }
 }

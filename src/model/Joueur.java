@@ -30,6 +30,7 @@ public class Joueur {
 	private boolean montour;
 	private boolean modechange;
 	private Joueur adverse;
+	private int changer_encours;
 	
 	 
 
@@ -40,15 +41,33 @@ public class Joueur {
 		this.montour=false;
 		etat=EtatJoueur.EN_VIE;
 		modechange=false;
-		
+		changer_encours=3;
 	}
 	
 
-	public void pioche() {
-		if (!deck.isEmpty()) {
-			Carte c = deck.pop();
-			this.main.add(c);
+	/**
+	 * @return the changer_encours
+	 */
+	public int getChanger_encours() {
+		return changer_encours;
+	}
+
+
+	/**
+	 * @param changer_encours the changer_encours to set
+	 */
+	public void setChanger_encours(int changer_encours) {
+		if (this.changer_encours==1) {
+			this.changer_encours=0;
 		}
+		else this.changer_encours -= changer_encours;
+		
+	}
+
+
+	public void pioche() {
+		if (deck.isEmpty())return;
+		main.add(deck.pop());
 	}
 	
 	public void piocherMainInitiale() {
@@ -67,7 +86,7 @@ public class Joueur {
 	public void ChangerCarte(Carte c) {
 	    if (main.contains(c)) {
 	        
-	        if (personnageActif != null && personnageActif.isUtilisable()) main.add(personnageActif);
+	        if (personnageActif != null && !personnageActif.isKO()) main.add(personnageActif);
 
 	        main.remove(c);
 	        personnageActif = c;
@@ -80,7 +99,7 @@ public class Joueur {
 	
 	public boolean joueurAPerdu() {
 	    if (personnageActif == null) return main.isEmpty() && deck.isEmpty();
-	    return main.isEmpty() && deck.isEmpty() && !personnageActif.isUtilisable();
+	    return main.isEmpty() && deck.isEmpty() && personnageActif.isKO();
 	}
 	
 	

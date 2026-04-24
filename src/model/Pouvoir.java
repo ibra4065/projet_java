@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 public class Pouvoir {
     
     public static enum TypePouvoir {
@@ -19,11 +21,12 @@ public class Pouvoir {
     private TypePouvoir type;
     private int valeur;
     private int duree;
-    boolean etat;
+    private boolean etat;
+    private boolean Consommetour;
 
     public Pouvoir(TypePouvoir type) {
         this.type = type;
-        this.etat = true;
+        etat = true;
 
         // 🔥 INITIALISATION AUTOMATIQUE
         switch(type) {
@@ -31,56 +34,67 @@ public class Pouvoir {
             case SOIN:
                 valeur = 20;
                 duree = 1;
+                Consommetour=false;
                 break;
 
             case CRITIQUE:
                 valeur = 2; // x2 dégâts
                 duree = 1;
+                Consommetour=true;
                 break;
 
             case BRULURE:
-                valeur = 5;
+                valeur = 15;
                 duree = 3;
+                Consommetour=true;
                 break;
 
             case POISON:
-                valeur = 5;
+                valeur = 18;
                 duree = 3;
+                Consommetour=true;
                 break;
 
             case BUFF_ATTAQUE:
                 valeur = 10;
                 duree = 3;
+                Consommetour=false;
                 break;
 
             case DEBUFF_ATTAQUE:
                 valeur = 10;
                 duree = 3;
+                Consommetour=false;
                 break;
 
             case BUFF_DEFENSE:
                 valeur = 10;
                 duree = 3;
+                Consommetour=false;
                 break;
 
             case DEBUFF_DEFENSE:
                 valeur = 10;
                 duree = 3;
+                Consommetour=false;
                 break;
 
             case PARALYSIE:
-                valeur = 1;
-                duree = 2;
+            	valeur = 2;
+                duree = 3;
+                Consommetour=false;
                 break;
 
             case SOMMEIL:
-                valeur = 1;
-                duree = 2;
+                valeur = 2;
+                duree = 1;
+                Consommetour=false;
                 break;
 
             case GEL:
-                valeur = 1;
-                duree = 2;
+                valeur = 3;
+                duree = 1;
+                Consommetour=false;
                 break;
         }
     }
@@ -112,4 +126,10 @@ public class Pouvoir {
     public void setType(TypePouvoir type) {
         this.type = type;
     }
+
+	public boolean isConsommetour() {
+		return Consommetour;
+	}
+    
+    
 }
