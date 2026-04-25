@@ -26,6 +26,7 @@ public class BibliothequeCartes {
             this.type = type;
             this.pouvoir = pouvoir;
         }
+        
     }
 
     private Map<String, Caracteristique> CatalogueCartes;

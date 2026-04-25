@@ -23,10 +23,12 @@ public class Pouvoir {
     private int duree;
     private boolean etat;
     private boolean Consommetour;
+    private boolean utilisé;
 
     public Pouvoir(TypePouvoir type) {
         this.type = type;
         etat = true;
+        utilisé=false;
 
         // 🔥 INITIALISATION AUTOMATIQUE
         switch(type) {
@@ -99,7 +101,21 @@ public class Pouvoir {
         }
     }
 
-    public int getValeur() {
+    /**
+	 * @return the utilisé
+	 */
+	public boolean isUtilisé() {
+		return utilisé;
+	}
+
+	/**
+	 * @param utilisé the utilisé to set
+	 */
+	public void setUtilisé(boolean utilisé) {
+		this.utilisé = utilisé;
+	}
+
+	public int getValeur() {
         return valeur;
     }
 

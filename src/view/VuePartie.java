@@ -240,7 +240,7 @@ public class VuePartie extends JPanel implements Observer{
 	    mainJ1.removeAll();
 
 	    if (model.getEtat() == Etat_partie.DEBUT && model.getJ1().getMain().isEmpty())  {
-	        JButton piocherinit = new JButton("piocher");
+	        JButton piocherinit = new JButton("piocher 3 cartes");
 	        piocherinit.setActionCommand("PIOCHER_INIT_J1");
 	        piocherinit.addActionListener(cntrl);
 	        mainJ1.add(piocherinit);
@@ -305,7 +305,7 @@ public class VuePartie extends JPanel implements Observer{
 	    mainJ2.removeAll();
 
 	    if (model.getEtat() == Etat_partie.DEBUT && model.getJ2().getMain().isEmpty()) {
-	        JButton piocherinit = new JButton("piocher");
+	        JButton piocherinit = new JButton("piocher 3 cartes");
 	        piocherinit.setActionCommand("PIOCHER_INIT_J2");
 	        piocherinit.addActionListener(cntrl);
 	        mainJ2.add(piocherinit);
@@ -414,6 +414,9 @@ public class VuePartie extends JPanel implements Observer{
 
 		changerCarteJ1.setEnabled(model.peutChangerCarte(model.getJ1()));
 		changerCarteJ2.setEnabled(model.peutChangerCarte(model.getJ2()));
+		
+		piocherJ1.setEnabled(model.peutPiocher(model.getJ1()));
+		piocherJ2.setEnabled(model.peutPiocher(model.getJ2()));
 		
 		passerJ1.setEnabled(model.peutpasser(model.getJ1()));
 		passerJ2.setEnabled(model.peutpasser(model.getJ2()));

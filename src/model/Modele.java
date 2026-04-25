@@ -30,11 +30,12 @@ public class Modele extends Observable{
 	private Joueur J2;
 	private Joueur courant;
 	private boolean piocheFaite;
+	public static int tailledeck = 5;
 	
 	public Modele() {
 		this.biblio=new BibliothequeCartes();
-		J1 = new Joueur("J1", biblio.creerDeckAleatoire(3));
-		J2 = new Joueur("J2", biblio.creerDeckAleatoire(5));
+		J1 = new Joueur("J1", biblio.creerDeckAleatoire(tailledeck));
+		J2 = new Joueur("J2", biblio.creerDeckAleatoire(tailledeck));
 		tour=0;
 		this.etat=Etat_partie.DEBUT;
 		J1.initJoueurAdverse(J2);
@@ -67,6 +68,8 @@ public class Modele extends Observable{
 
 	    tour++;
 	    piocheFaite=false;
+	    if (courant.getPersonnageActif().getPouvoir().isUtilisé())courant.getPersonnageActif().getPouvoir().setUtilisé(false);
+
 	    for (Carte c :courant.getMain()) {
         	c.diminuerStatuts();
         }
@@ -212,7 +215,7 @@ public class Modele extends Observable{
 	    if (j == null) return;
 	    if (j != courant) return;
 	    if (j.getPersonnageActif() == null) return;
-	    if (j.getPersonnageActif().isUtilisable() && j.getChanger_encours()<=0) return;
+	    if (j.getPersonnageActif().isUtilisable() && j.getChanger_encours()<=0 && !j.getPersonnageActif().equals(j.getAdverse().getPersonnageActif())) return;
 	    
 
 	    j.setModechange(true);
@@ -233,7 +236,7 @@ public class Modele extends Observable{
 	    if (!j.isMonTour()) return false;
 	    if (j.getPersonnageActif() == null) return false;
 
-	    return !j.getPersonnageActif().isUtilisable() || j.getChanger_encours()>0;
+	    return !j.getPersonnageActif().isUtilisable() || j.getChanger_encours()>0 || j.getPersonnageActif().equals(j.getAdverse().getPersonnageActif());
 	}
 	
 	public boolean peutUtiliserPouvoir(Joueur j) {
@@ -245,7 +248,8 @@ public class Modele extends Observable{
 	    if (!j.getPersonnageActif().isUtilisable()) return false;
 	    if (j.getPersonnageActif().getPouvoir() == null) return false;
 
-	    return j.getPersonnageActif().getPouvoir().isEtat();
+	    return j.getPersonnageActif().getPouvoir().isEtat() && !courant.getPersonnageActif().getPouvoir().isUtilisé();
+
 	}
 	
 	public boolean peutAttaquer(Joueur j) {
@@ -269,6 +273,15 @@ public class Modele extends Observable{
 		if (etat != Etat_partie.EN_COURS) return false;
 		if (!j.isMonTour()) return false;
 		return !j.getPersonnageActif().isUtilisable() && !j.getPersonnageActif().isKO();
+	}
+	
+	public boolean peutPiocher(Joueur j) {
+	    if (j == null) return false;
+	    if (etat != Etat_partie.EN_COURS) return false;
+	    if (!j.isMonTour()) return false;
+	    if (j.getPersonnageActif() == null) return false;
+
+	    return !j.getDeck().isEmpty() && j.isMonTour() && !piocheFaite;
 	}
 	
 	public int getTour() {return tour;}

@@ -35,6 +35,7 @@ public class Carte {
         /*TENEB*/   {1.0,   2.0,   1.0,   1.0, 1.0,  2.0,  1.0,  1.0,  2.0,   1.0,  1.0,   1.0,   0.5, 1.0,  1.0, 0.5,  0.5,  1.0},
         /*VOL*/     {1.0,   0.5,   1.0,   1.0, 2.0,  1.0,  1.0,  2.0,  0.5,   1.0,  0.5,   1.0,   1.0, 2.0,  0.0, 1.0,  1.0,  1.0}
     };
+    
 
     private final String nom;
     private int pv;
@@ -171,13 +172,32 @@ public class Carte {
             default:
                 break;
         }
+        
+        this.pouvoir.setUtilisé(true);
 
         if (cible != null) {
             cible.verifierKO();
         }
     }
 
-    private void consommerPouvoir() {
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true; // même objet
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false; 
+        }
+
+        Carte other = (Carte) obj;
+
+        return this.nom != null && this.nom.equals(other.nom);
+    }
+
+
+
+	private void consommerPouvoir() {
         int d = this.pouvoir.getDuree();
 
         if (d > 1) {

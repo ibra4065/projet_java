@@ -28,17 +28,21 @@ public class VueRegles extends JFrame {
         texteRegles.setText(
             "But du jeu :\n" +
             "Chaque joueur possède un deck de cartes Pokémon.\n" +
-            "Le but est de battre le Pokémon actif de l'adversaire.\n\n" +
+            "Le but est de battre le Pokémon actif de l'adversaire.\n" +
+            "chaque carte a des point fort contre certaine type de carte et point faible face a certain type\n" +
+            "pour mieux comprendre les type de carte et ses caracteristique je vous invite de visiter la page .\n" +
+            "https://www.pokepedia.fr/Table_des_types.\n\n" +
 
             "Début de partie :\n" +
-            "- Chaque joueur pioche ses cartes.\n" +
-            "- Chaque joueur choisit un Pokémon actif.\n\n" +
+            "- Chaque joueur pioche 3 cartes.\n" +
+            "- Chaque joueur choisit un Pokémon pour commencer la partie.\n\n" +
 
             "Pendant un tour :\n" +
             "- Le joueur peut attaquer.\n" +
-            "- Il peut utiliser le pouvoir de son Pokémon.\n" +
-            "- Il peut changer de carte active.\n" +
-            "- Il peut piocher ou passer son tour.\n\n" +
+            "- Il peut utiliser le pouvoir de son Pokémon si cest possible .\n" +
+            "- Il peut changer sa carte active quand il veut (il a 3 fois de changer pendant la partie) une posibiliter de changer aussi si les 2 carte sur le plateau sont pareile et ils ont aucun effet  .\n" +
+            "- il peut piocher une carte de son deck si il n'est pas vide.\n" +
+            "- il peut passer le tour ou changer sa carte si celle ci est non utilisable temporairement .\n\n" +
 
             "Caractéristiques :\n" +
             "- PV : points de vie de la carte.\n" +
@@ -46,6 +50,7 @@ public class VueRegles extends JFrame {
             "- Défense : réduction des dégâts reçus.\n" +
             "- Type : élément de la carte.\n" +
             "- Pouvoir : effet spécial de la carte.\n"
+            
         );
 
         texteRegles.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));

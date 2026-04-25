@@ -100,7 +100,7 @@ public class Controleur implements ActionListener {
             case "piocherJ2":
             	model.piocher(model.getJ2());
             	break;
-            case "passerJ21":
+            case "passerJ1":
             	model.passertour();
             	break;
             case "passerJ2":
