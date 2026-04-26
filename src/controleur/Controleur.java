@@ -106,6 +106,9 @@ public class Controleur implements ActionListener {
             case "passerJ2":
             	model.passertour();
             	break;
+            case "rejouer":
+            	model.reset();
+            	break;
         }
     }
 }

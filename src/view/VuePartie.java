@@ -182,12 +182,14 @@ public class VuePartie extends JPanel implements Observer{
 	    btnRejouer = new JButton("Rejouer");
 	    btnRejouer.setFont(new Font("SansSerif", Font.PLAIN, 22));
 	    btnRejouer.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+	    btnRejouer.setActionCommand("rejouer");
+	    btnRejouer.addActionListener(cntrl);
+	    
 	    btnQuitterFin = new JButton("Quitter");
 	    btnQuitterFin.setFont(new Font("SansSerif", Font.PLAIN, 22));
 	    btnQuitterFin.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	    btnRejouer.addActionListener(e -> model.reset());
+	    
 
 	    btnQuitterFin.addActionListener(e -> System.exit(0));
 
