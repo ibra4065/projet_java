@@ -30,7 +30,7 @@ public class Modele extends Observable{
 	private Joueur J2;
 	private Joueur courant;
 	private boolean piocheFaite;
-	public static int tailledeck = 5;
+	public static int tailledeck = 10;
 	
 	public Modele() {
 		this.biblio=new BibliothequeCartes();
@@ -187,6 +187,7 @@ public class Modele extends Observable{
 		if (etat != Etat_partie.EN_COURS) return;
 		if (courant == null) return;
 		if (piocheFaite) return;
+		if (j.getMain().size()>=8) return;
 		j.pioche();
 		piocheFaite=true;
 		
@@ -281,7 +282,7 @@ public class Modele extends Observable{
 	    if (!j.isMonTour()) return false;
 	    if (j.getPersonnageActif() == null) return false;
 
-	    return !j.getDeck().isEmpty() && j.isMonTour() && !piocheFaite;
+	    return !j.getDeck().isEmpty() && j.isMonTour() && !piocheFaite && j.getMain().size()<8;
 	}
 	
 	public int getTour() {return tour;}

@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import model.BibliothequeCartes;
+import model.BibliothequeCartes.Caracteristique;
 import java.awt.*;
 
 public class VueRegles extends JFrame {
@@ -59,17 +62,13 @@ public class VueRegles extends JFrame {
         panelCartes.setLayout(new GridLayout(0, 1, 10, 10));
         panelCartes.setBackground(Color.WHITE);
         panelCartes.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        ajouterCarte(panelCartes, "Dracaufeu", "cartes/Dracaufeu.jpg", 170, 55, 80, "FEU", "BRULURE");
-        ajouterCarte(panelCartes, "Pikachu", "cartes/pikachu.jpg", 70, 15, 10, "ELECTRIK", "PARALYSIE");
-        ajouterCarte(panelCartes, "Feuillajou", "cartes/Feuillajou.jpg", 70, 15, 10, "PLANTE", "BUFF_ATTAQUE");
-        ajouterCarte(panelCartes, "Magicarpe", "cartes/Magicarpe.jpg", 30, 5, 5, "EAU", "SOIN");
-        ajouterCarte(panelCartes, "Qulbutoké", "cartes/Qulbutoké.jpg", 120, 30, 50, "PSY", "DEBUFF_ATTAQUE");
-        ajouterCarte(panelCartes, "Salamèche", "cartes/Salamèche.jpg", 70, 15, 10, "FEU", "BRULURE");
-        ajouterCarte(panelCartes, "Goupix", "cartes/Goupix.jpg", 60, 10, 10, "FEU", "BRULURE");
-        ajouterCarte(panelCartes, "Diancie", "cartes/Diancie.jpg", 90, 20, 35, "ROCHE", "BUFF_DEFENSE");
-        ajouterCarte(panelCartes, "Miaouss", "cartes/Miaouss.jpg", 60, 10, 10, "NORMAL", "CRITIQUE");
-
+        BibliothequeCartes biblio = new BibliothequeCartes();
+        
+        for (String nom : biblio.getCatalogueCartes().keySet()) {
+        	Caracteristique c = biblio.getCatalogueCartes().get(nom);
+        	ajouterCarte(panelCartes, nom, "cartes/"+nom+".jpg",c.getPv() , c.getAttack(), c.getDefence(), c.getType().name(), c.getPouvoir().name());
+        }
+        
         JPanel contenu = new JPanel();
         contenu.setLayout(new BorderLayout());
         contenu.add(texteRegles, BorderLayout.NORTH);

@@ -13,7 +13,32 @@ public class BibliothequeCartes {
 
     public class Caracteristique {
 
-        int pv;
+        
+		public int getPv() {
+			return pv;
+		}
+
+		
+		public int getAttack() {
+			return attack;
+		}
+
+		
+		public int getDefence() {
+			return defence;
+		}
+
+		
+		public typeCarte getType() {
+			return type;
+		}
+
+		
+		public TypePouvoir getPouvoir() {
+			return pouvoir;
+		}
+
+		int pv;
         int attack;
         int defence;
         typeCarte type;
@@ -44,9 +69,18 @@ public class BibliothequeCartes {
         CatalogueCartes.put("Goupix",new Caracteristique(60, 10, 10, typeCarte.FEU, TypePouvoir.BRULURE));
         CatalogueCartes.put("Diancie",new Caracteristique(90, 20, 35, typeCarte.ROCHE, TypePouvoir.BUFF_DEFENSE));
         CatalogueCartes.put("Miaouss",new Caracteristique(60, 10, 10, typeCarte.NORMAL, TypePouvoir.CRITIQUE));
+        CatalogueCartes.put("Tortank", new Caracteristique(150, 40, 60, typeCarte.EAU, TypePouvoir.SOIN));
+        CatalogueCartes.put("Artikodin", new Caracteristique(130, 35, 60, typeCarte.GLACE, TypePouvoir.GEL));
+        CatalogueCartes.put("Noctali", new Caracteristique(120, 30, 50, typeCarte.TENEBRES, TypePouvoir.DEBUFF_ATTAQUE));
+
     }
 
-    public Carte creerCarte(String nom) {
+    
+	public Map<String, Caracteristique> getCatalogueCartes() {
+		return CatalogueCartes;
+	}
+
+	public Carte creerCarte(String nom) {
 
         Caracteristique c = CatalogueCartes.get(nom);
 
